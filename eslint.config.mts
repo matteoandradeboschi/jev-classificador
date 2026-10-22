@@ -11,6 +11,7 @@ export default defineConfig(
 		'versions.json',
 		'main.js',
 		'vitest.config.ts',
+		'test',
 		'package.json',
 		'package-lock.json',
 		'tsconfig.json',
