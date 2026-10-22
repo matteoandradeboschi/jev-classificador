@@ -1,0 +1,1451 @@
+{
+  "fonte": "OpenAlex (https://openalex.org) — fields e subfields",
+  "licenca": "CC0 1.0",
+  "baixado_em": "2026-10-22",
+  "uso": "categoria = fields (nível 2), genero = subfields (nível 3)",
+  "traducao": "PT-BR, minúsculas, feita por Claude",
+  "categorias": [
+    {
+      "id": "12",
+      "en": "Arts and Humanities",
+      "pt": "artes e humanidades",
+      "generos": [
+        {
+          "id": "1204",
+          "en": "Archeology",
+          "pt": "arqueologia"
+        },
+        {
+          "id": "1200",
+          "en": "General Arts and Humanities",
+          "pt": "artes e humanidades (geral)"
+        },
+        {
+          "id": "1213",
+          "en": "Visual Arts and Performing Arts",
+          "pt": "artes visuais e cênicas"
+        },
+        {
+          "id": "1212",
+          "en": "Religious studies",
+          "pt": "ciências da religião"
+        },
+        {
+          "id": "1206",
+          "en": "Conservation",
+          "pt": "conservação e restauro"
+        },
+        {
+          "id": "1205",
+          "en": "Classics",
+          "pt": "estudos clássicos"
+        },
+        {
+          "id": "1211",
+          "en": "Philosophy",
+          "pt": "filosofia"
+        },
+        {
+          "id": "1202",
+          "en": "History",
+          "pt": "história"
+        },
+        {
+          "id": "1207",
+          "en": "History and Philosophy of Science",
+          "pt": "história e filosofia da ciência"
+        },
+        {
+          "id": "1208",
+          "en": "Literature and Literary Theory",
+          "pt": "literatura e teoria literária"
+        },
+        {
+          "id": "1203",
+          "en": "Language and Linguistics",
+          "pt": "língua e linguística"
+        },
+        {
+          "id": "1209",
+          "en": "Museology",
+          "pt": "museologia"
+        },
+        {
+          "id": "1210",
+          "en": "Music",
+          "pt": "música"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "en": "Biochemistry, Genetics and Molecular Biology",
+      "pt": "bioquímica, genética e biologia molecular",
+      "generos": [
+        {
+          "id": "1304",
+          "en": "Biophysics",
+          "pt": "biofísica"
+        },
+        {
+          "id": "1307",
+          "en": "Cell Biology",
+          "pt": "biologia celular"
+        },
+        {
+          "id": "1309",
+          "en": "Developmental Biology",
+          "pt": "biologia do desenvolvimento"
+        },
+        {
+          "id": "1315",
+          "en": "Structural Biology",
+          "pt": "biologia estrutural"
+        },
+        {
+          "id": "1312",
+          "en": "Molecular Biology",
+          "pt": "biologia molecular"
+        },
+        {
+          "id": "1303",
+          "en": "Biochemistry",
+          "pt": "bioquímica"
+        },
+        {
+          "id": "1308",
+          "en": "Clinical Biochemistry",
+          "pt": "bioquímica clínica"
+        },
+        {
+          "id": "1305",
+          "en": "Biotechnology",
+          "pt": "biotecnologia"
+        },
+        {
+          "id": "1310",
+          "en": "Endocrinology",
+          "pt": "endocrinologia"
+        },
+        {
+          "id": "1302",
+          "en": "Aging",
+          "pt": "envelhecimento"
+        },
+        {
+          "id": "1314",
+          "en": "Physiology",
+          "pt": "fisiologia"
+        },
+        {
+          "id": "1311",
+          "en": "Genetics",
+          "pt": "genética"
+        },
+        {
+          "id": "1313",
+          "en": "Molecular Medicine",
+          "pt": "medicina molecular"
+        },
+        {
+          "id": "1306",
+          "en": "Cancer Research",
+          "pt": "pesquisa sobre câncer"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "en": "Computer Science",
+      "pt": "ciência da computação",
+      "generos": [
+        {
+          "id": "1706",
+          "en": "Computer Science Applications",
+          "pt": "aplicações da computação"
+        },
+        {
+          "id": "1704",
+          "en": "Computer Graphics and Computer-Aided Design",
+          "pt": "computação gráfica e cad"
+        },
+        {
+          "id": "1708",
+          "en": "Hardware and Architecture",
+          "pt": "hardware e arquitetura de computadores"
+        },
+        {
+          "id": "1702",
+          "en": "Artificial Intelligence",
+          "pt": "inteligência artificial"
+        },
+        {
+          "id": "1709",
+          "en": "Human-Computer Interaction",
+          "pt": "interação humano-computador"
+        },
+        {
+          "id": "1711",
+          "en": "Signal Processing",
+          "pt": "processamento de sinais"
+        },
+        {
+          "id": "1705",
+          "en": "Computer Networks and Communications",
+          "pt": "redes de computadores e comunicações"
+        },
+        {
+          "id": "1710",
+          "en": "Information Systems",
+          "pt": "sistemas de informação"
+        },
+        {
+          "id": "1712",
+          "en": "Software",
+          "pt": "software"
+        },
+        {
+          "id": "1703",
+          "en": "Computational Theory and Mathematics",
+          "pt": "teoria da computação e matemática"
+        },
+        {
+          "id": "1707",
+          "en": "Computer Vision and Pattern Recognition",
+          "pt": "visão computacional e reconhecimento de padrões"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "en": "Materials Science",
+      "pt": "ciência dos materiais",
+      "generos": [
+        {
+          "id": "2502",
+          "en": "Biomaterials",
+          "pt": "biomateriais"
+        },
+        {
+          "id": "2503",
+          "en": "Ceramics and Composites",
+          "pt": "cerâmicas e compósitos"
+        },
+        {
+          "id": "2500",
+          "en": "General Materials Science",
+          "pt": "ciência dos materiais (geral)"
+        },
+        {
+          "id": "2504",
+          "en": "Electronic, Optical and Magnetic Materials",
+          "pt": "materiais eletrônicos, ópticos e magnéticos"
+        },
+        {
+          "id": "2506",
+          "en": "Metals and Alloys",
+          "pt": "metais e ligas"
+        },
+        {
+          "id": "2507",
+          "en": "Polymers and Plastics",
+          "pt": "polímeros e plásticos"
+        },
+        {
+          "id": "2505",
+          "en": "Materials Chemistry",
+          "pt": "química de materiais"
+        },
+        {
+          "id": "2508",
+          "en": "Surfaces, Coatings and Films",
+          "pt": "superfícies, revestimentos e filmes"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "en": "Agricultural and Biological Sciences",
+      "pt": "ciências agrárias e biológicas",
+      "generos": [
+        {
+          "id": "1102",
+          "en": "Agronomy and Crop Science",
+          "pt": "agronomia e fitotecnia"
+        },
+        {
+          "id": "1110",
+          "en": "Plant Science",
+          "pt": "botânica"
+        },
+        {
+          "id": "1111",
+          "en": "Soil Science",
+          "pt": "ciência do solo"
+        },
+        {
+          "id": "1106",
+          "en": "Food Science",
+          "pt": "ciência dos alimentos"
+        },
+        {
+          "id": "1100",
+          "en": "General Agricultural and Biological Sciences",
+          "pt": "ciências agrárias e biológicas (geral)"
+        },
+        {
+          "id": "1104",
+          "en": "Aquatic Science",
+          "pt": "ciências aquáticas"
+        },
+        {
+          "id": "1105",
+          "en": "Ecology, Evolution, Behavior and Systematics",
+          "pt": "ecologia, evolução, comportamento e sistemática"
+        },
+        {
+          "id": "1107",
+          "en": "Forestry",
+          "pt": "engenharia florestal"
+        },
+        {
+          "id": "1109",
+          "en": "Insect Science",
+          "pt": "entomologia"
+        },
+        {
+          "id": "1108",
+          "en": "Horticulture",
+          "pt": "horticultura"
+        },
+        {
+          "id": "1103",
+          "en": "Animal Science and Zoology",
+          "pt": "zootecnia e zoologia"
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "en": "Environmental Science",
+      "pt": "ciências ambientais",
+      "generos": [
+        {
+          "id": "2312",
+          "en": "Water Science and Technology",
+          "pt": "ciência e tecnologia da água"
+        },
+        {
+          "id": "2309",
+          "en": "Nature and Landscape Conservation",
+          "pt": "conservação da natureza e da paisagem"
+        },
+        {
+          "id": "2303",
+          "en": "Ecology",
+          "pt": "ecologia"
+        },
+        {
+          "id": "2305",
+          "en": "Environmental Engineering",
+          "pt": "engenharia ambiental"
+        },
+        {
+          "id": "2311",
+          "en": "Waste Management and Disposal",
+          "pt": "gestão e destinação de resíduos"
+        },
+        {
+          "id": "2308",
+          "en": "Management, Monitoring, Policy and Law",
+          "pt": "gestão, monitoramento, políticas e direito ambiental"
+        },
+        {
+          "id": "2302",
+          "en": "Ecological Modeling",
+          "pt": "modelagem ecológica"
+        },
+        {
+          "id": "2306",
+          "en": "Global and Planetary Change",
+          "pt": "mudanças globais e planetárias"
+        },
+        {
+          "id": "2310",
+          "en": "Pollution",
+          "pt": "poluição"
+        },
+        {
+          "id": "2304",
+          "en": "Environmental Chemistry",
+          "pt": "química ambiental"
+        },
+        {
+          "id": "2307",
+          "en": "Health, Toxicology and Mutagenesis",
+          "pt": "saúde, toxicologia e mutagênese"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "en": "Decision Sciences",
+      "pt": "ciências da decisão",
+      "generos": [
+        {
+          "id": "1803",
+          "en": "Management Science and Operations Research",
+          "pt": "ciência da gestão e pesquisa operacional"
+        },
+        {
+          "id": "1800",
+          "en": "General Decision Sciences",
+          "pt": "ciências da decisão (geral)"
+        },
+        {
+          "id": "1804",
+          "en": "Statistics, Probability and Uncertainty",
+          "pt": "estatística, probabilidade e incerteza"
+        },
+        {
+          "id": "1802",
+          "en": "Information Systems and Management",
+          "pt": "sistemas de informação e gestão"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "en": "Earth and Planetary Sciences",
+      "pt": "ciências da terra e planetárias",
+      "generos": [
+        {
+          "id": "1902",
+          "en": "Atmospheric Science",
+          "pt": "ciências atmosféricas"
+        },
+        {
+          "id": "1912",
+          "en": "Space and Planetary Science",
+          "pt": "ciências espaciais e planetárias"
+        },
+        {
+          "id": "1908",
+          "en": "Geophysics",
+          "pt": "geofísica"
+        },
+        {
+          "id": "1907",
+          "en": "Geology",
+          "pt": "geologia"
+        },
+        {
+          "id": "1906",
+          "en": "Geochemistry and Petrology",
+          "pt": "geoquímica e petrologia"
+        },
+        {
+          "id": "1910",
+          "en": "Oceanography",
+          "pt": "oceanografia"
+        },
+        {
+          "id": "1911",
+          "en": "Paleontology",
+          "pt": "paleontologia"
+        },
+        {
+          "id": "1904",
+          "en": "Earth-Surface Processes",
+          "pt": "processos da superfície terrestre"
+        }
+      ]
+    },
+    {
+      "id": "33",
+      "en": "Social Sciences",
+      "pt": "ciências sociais",
+      "generos": [
+        {
+          "id": "3321",
+          "en": "Public Administration",
+          "pt": "administração pública"
+        },
+        {
+          "id": "3314",
+          "en": "Anthropology",
+          "pt": "antropologia"
+        },
+        {
+          "id": "3302",
+          "en": "Archeology",
+          "pt": "arqueologia"
+        },
+        {
+          "id": "3309",
+          "en": "Library and Information Sciences",
+          "pt": "biblioteconomia e ciência da informação"
+        },
+        {
+          "id": "3320",
+          "en": "Political Science and International Relations",
+          "pt": "ciência política e relações internacionais"
+        },
+        {
+          "id": "3300",
+          "en": "General Social Sciences",
+          "pt": "ciências sociais (geral)"
+        },
+        {
+          "id": "3315",
+          "en": "Communication",
+          "pt": "comunicação"
+        },
+        {
+          "id": "3317",
+          "en": "Demography",
+          "pt": "demografia"
+        },
+        {
+          "id": "3308",
+          "en": "Law",
+          "pt": "direito"
+        },
+        {
+          "id": "3304",
+          "en": "Education",
+          "pt": "educação"
+        },
+        {
+          "id": "3316",
+          "en": "Cultural Studies",
+          "pt": "estudos culturais"
+        },
+        {
+          "id": "3318",
+          "en": "Gender Studies",
+          "pt": "estudos de gênero"
+        },
+        {
+          "id": "3319",
+          "en": "Life-span and Life-course Studies",
+          "pt": "estudos do ciclo de vida"
+        },
+        {
+          "id": "3303",
+          "en": "Development",
+          "pt": "estudos do desenvolvimento"
+        },
+        {
+          "id": "3322",
+          "en": "Urban Studies",
+          "pt": "estudos urbanos"
+        },
+        {
+          "id": "3307",
+          "en": "Human Factors and Ergonomics",
+          "pt": "fatores humanos e ergonomia"
+        },
+        {
+          "id": "3305",
+          "en": "Geography, Planning and Development",
+          "pt": "geografia, planejamento e desenvolvimento"
+        },
+        {
+          "id": "3310",
+          "en": "Linguistics and Language",
+          "pt": "linguística e linguagem"
+        },
+        {
+          "id": "3311",
+          "en": "Safety Research",
+          "pt": "pesquisa em segurança"
+        },
+        {
+          "id": "3306",
+          "en": "Health",
+          "pt": "saúde e sociedade"
+        },
+        {
+          "id": "3312",
+          "en": "Sociology and Political Science",
+          "pt": "sociologia e ciência política"
+        },
+        {
+          "id": "3313",
+          "en": "Transportation",
+          "pt": "transportes"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "en": "Economics, Econometrics and Finance",
+      "pt": "economia, econometria e finanças",
+      "generos": [
+        {
+          "id": "2002",
+          "en": "Economics and Econometrics",
+          "pt": "economia e econometria"
+        },
+        {
+          "id": "2000",
+          "en": "General Economics, Econometrics and Finance",
+          "pt": "economia, econometria e finanças (geral)"
+        },
+        {
+          "id": "2003",
+          "en": "Finance",
+          "pt": "finanças"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "en": "Energy",
+      "pt": "energia",
+      "generos": [
+        {
+          "id": "2100",
+          "en": "General Energy",
+          "pt": "energia (geral)"
+        },
+        {
+          "id": "2104",
+          "en": "Nuclear Energy and Engineering",
+          "pt": "energia e engenharia nuclear"
+        },
+        {
+          "id": "2105",
+          "en": "Renewable Energy, Sustainability and the Environment",
+          "pt": "energias renováveis, sustentabilidade e meio ambiente"
+        },
+        {
+          "id": "2102",
+          "en": "Energy Engineering and Power Technology",
+          "pt": "engenharia de energia e tecnologia de potência"
+        },
+        {
+          "id": "2103",
+          "en": "Fuel Technology",
+          "pt": "tecnologia de combustíveis"
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "en": "Nursing",
+      "pt": "enfermagem",
+      "generos": [
+        {
+          "id": "2911",
+          "en": "Leadership and Management",
+          "pt": "liderança e gestão"
+        },
+        {
+          "id": "2916",
+          "en": "Nutrition and Dietetics",
+          "pt": "nutrição e dietética"
+        },
+        {
+          "id": "2922",
+          "en": "Research and Theory",
+          "pt": "pesquisa e teoria"
+        },
+        {
+          "id": "2910",
+          "en": "Issues, ethics and legal aspects",
+          "pt": "questões éticas e legais"
+        }
+      ]
+    },
+    {
+      "id": "22",
+      "en": "Engineering",
+      "pt": "engenharia",
+      "generos": [
+        {
+          "id": "2216",
+          "en": "Architecture",
+          "pt": "arquitetura"
+        },
+        {
+          "id": "2215",
+          "en": "Building and Construction",
+          "pt": "edificações e construção"
+        },
+        {
+          "id": "2200",
+          "en": "General Engineering",
+          "pt": "engenharia (geral)"
+        },
+        {
+          "id": "2202",
+          "en": "Aerospace Engineering",
+          "pt": "engenharia aeroespacial"
+        },
+        {
+          "id": "2203",
+          "en": "Automotive Engineering",
+          "pt": "engenharia automotiva"
+        },
+        {
+          "id": "2204",
+          "en": "Biomedical Engineering",
+          "pt": "engenharia biomédica"
+        },
+        {
+          "id": "2205",
+          "en": "Civil and Structural Engineering",
+          "pt": "engenharia civil e estrutural"
+        },
+        {
+          "id": "2207",
+          "en": "Control and Systems Engineering",
+          "pt": "engenharia de controle e sistemas"
+        },
+        {
+          "id": "2208",
+          "en": "Electrical and Electronic Engineering",
+          "pt": "engenharia elétrica e eletrônica"
+        },
+        {
+          "id": "2209",
+          "en": "Industrial and Manufacturing Engineering",
+          "pt": "engenharia industrial e de produção"
+        },
+        {
+          "id": "2210",
+          "en": "Mechanical Engineering",
+          "pt": "engenharia mecânica"
+        },
+        {
+          "id": "2212",
+          "en": "Ocean Engineering",
+          "pt": "engenharia oceânica"
+        },
+        {
+          "id": "2206",
+          "en": "Computational Mechanics",
+          "pt": "mecânica computacional"
+        },
+        {
+          "id": "2211",
+          "en": "Mechanics of Materials",
+          "pt": "mecânica dos materiais"
+        },
+        {
+          "id": "2213",
+          "en": "Safety, Risk, Reliability and Quality",
+          "pt": "segurança, risco, confiabilidade e qualidade"
+        },
+        {
+          "id": "2214",
+          "en": "Media Technology",
+          "pt": "tecnologia de mídia"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "en": "Chemical Engineering",
+      "pt": "engenharia química",
+      "generos": [
+        {
+          "id": "1502",
+          "en": "Bioengineering",
+          "pt": "bioengenharia"
+        },
+        {
+          "id": "1503",
+          "en": "Catalysis",
+          "pt": "catálise"
+        },
+        {
+          "id": "1507",
+          "en": "Fluid Flow and Transfer Processes",
+          "pt": "escoamento de fluidos e processos de transferência"
+        },
+        {
+          "id": "1506",
+          "en": "Filtration and Separation",
+          "pt": "filtração e separação"
+        },
+        {
+          "id": "1508",
+          "en": "Process Chemistry and Technology",
+          "pt": "química e tecnologia de processos"
+        },
+        {
+          "id": "1504",
+          "en": "Chemical Health and Safety",
+          "pt": "segurança química e saúde"
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "en": "Pharmacology, Toxicology and Pharmaceutics",
+      "pt": "farmacologia, toxicologia e farmacêutica",
+      "generos": [
+        {
+          "id": "3003",
+          "en": "Pharmaceutical Science",
+          "pt": "ciências farmacêuticas"
+        },
+        {
+          "id": "3002",
+          "en": "Drug Discovery",
+          "pt": "descoberta de fármacos"
+        },
+        {
+          "id": "3004",
+          "en": "Pharmacology",
+          "pt": "farmacologia"
+        },
+        {
+          "id": "3005",
+          "en": "Toxicology",
+          "pt": "toxicologia"
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "en": "Physics and Astronomy",
+      "pt": "física e astronomia",
+      "generos": [
+        {
+          "id": "3102",
+          "en": "Acoustics and Ultrasonics",
+          "pt": "acústica e ultrassom"
+        },
+        {
+          "id": "3103",
+          "en": "Astronomy and Astrophysics",
+          "pt": "astronomia e astrofísica"
+        },
+        {
+          "id": "3107",
+          "en": "Atomic and Molecular Physics, and Optics",
+          "pt": "física atômica e molecular, e óptica"
+        },
+        {
+          "id": "3104",
+          "en": "Condensed Matter Physics",
+          "pt": "física da matéria condensada"
+        },
+        {
+          "id": "3109",
+          "en": "Statistical and Nonlinear Physics",
+          "pt": "física estatística e não linear"
+        },
+        {
+          "id": "3106",
+          "en": "Nuclear and High Energy Physics",
+          "pt": "física nuclear e de altas energias"
+        },
+        {
+          "id": "3105",
+          "en": "Instrumentation",
+          "pt": "instrumentação"
+        },
+        {
+          "id": "3108",
+          "en": "Radiation",
+          "pt": "radiação"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "en": "Immunology and Microbiology",
+      "pt": "imunologia e microbiologia",
+      "generos": [
+        {
+          "id": "2403",
+          "en": "Immunology",
+          "pt": "imunologia"
+        },
+        {
+          "id": "2404",
+          "en": "Microbiology",
+          "pt": "microbiologia"
+        },
+        {
+          "id": "2402",
+          "en": "Applied Microbiology and Biotechnology",
+          "pt": "microbiologia aplicada e biotecnologia"
+        },
+        {
+          "id": "2405",
+          "en": "Parasitology",
+          "pt": "parasitologia"
+        },
+        {
+          "id": "2406",
+          "en": "Virology",
+          "pt": "virologia"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "en": "Mathematics",
+      "pt": "matemática",
+      "generos": [
+        {
+          "id": "2612",
+          "en": "Numerical Analysis",
+          "pt": "análise numérica"
+        },
+        {
+          "id": "2614",
+          "en": "Theoretical Computer Science",
+          "pt": "ciência da computação teórica"
+        },
+        {
+          "id": "2613",
+          "en": "Statistics and Probability",
+          "pt": "estatística e probabilidade"
+        },
+        {
+          "id": "2610",
+          "en": "Mathematical Physics",
+          "pt": "física matemática"
+        },
+        {
+          "id": "2608",
+          "en": "Geometry and Topology",
+          "pt": "geometria e topologia"
+        },
+        {
+          "id": "2604",
+          "en": "Applied Mathematics",
+          "pt": "matemática aplicada"
+        },
+        {
+          "id": "2605",
+          "en": "Computational Mathematics",
+          "pt": "matemática computacional"
+        },
+        {
+          "id": "2607",
+          "en": "Discrete Mathematics and Combinatorics",
+          "pt": "matemática discreta e combinatória"
+        },
+        {
+          "id": "2611",
+          "en": "Modeling and Simulation",
+          "pt": "modelagem e simulação"
+        },
+        {
+          "id": "2602",
+          "en": "Algebra and Number Theory",
+          "pt": "álgebra e teoria dos números"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "en": "Medicine",
+      "pt": "medicina",
+      "generos": [
+        {
+          "id": "2702",
+          "en": "Anatomy",
+          "pt": "anatomia"
+        },
+        {
+          "id": "2703",
+          "en": "Anesthesiology and Pain Medicine",
+          "pt": "anestesiologia e medicina da dor"
+        },
+        {
+          "id": "2704",
+          "en": "Biochemistry",
+          "pt": "bioquímica"
+        },
+        {
+          "id": "2705",
+          "en": "Cardiology and Cardiovascular Medicine",
+          "pt": "cardiologia e medicina cardiovascular"
+        },
+        {
+          "id": "2746",
+          "en": "Surgery",
+          "pt": "cirurgia"
+        },
+        {
+          "id": "2724",
+          "en": "Internal Medicine",
+          "pt": "clínica médica"
+        },
+        {
+          "id": "2708",
+          "en": "Dermatology",
+          "pt": "dermatologia"
+        },
+        {
+          "id": "2725",
+          "en": "Infectious Diseases",
+          "pt": "doenças infecciosas"
+        },
+        {
+          "id": "2712",
+          "en": "Endocrinology, Diabetes and Metabolism",
+          "pt": "endocrinologia, diabetes e metabolismo"
+        },
+        {
+          "id": "2713",
+          "en": "Epidemiology",
+          "pt": "epidemiologia"
+        },
+        {
+          "id": "2736",
+          "en": "Pharmacology",
+          "pt": "farmacologia"
+        },
+        {
+          "id": "2737",
+          "en": "Physiology",
+          "pt": "fisiologia"
+        },
+        {
+          "id": "2715",
+          "en": "Gastroenterology",
+          "pt": "gastroenterologia"
+        },
+        {
+          "id": "2716",
+          "en": "Genetics",
+          "pt": "genética"
+        },
+        {
+          "id": "2717",
+          "en": "Geriatrics and Gerontology",
+          "pt": "geriatria e gerontologia"
+        },
+        {
+          "id": "2720",
+          "en": "Hematology",
+          "pt": "hematologia"
+        },
+        {
+          "id": "2721",
+          "en": "Hepatology",
+          "pt": "hepatologia"
+        },
+        {
+          "id": "2723",
+          "en": "Immunology and Allergy",
+          "pt": "imunologia e alergia"
+        },
+        {
+          "id": "2718",
+          "en": "Health Informatics",
+          "pt": "informática em saúde"
+        },
+        {
+          "id": "2707",
+          "en": "Complementary and alternative medicine",
+          "pt": "medicina complementar e alternativa"
+        },
+        {
+          "id": "2711",
+          "en": "Emergency Medicine",
+          "pt": "medicina de emergência"
+        },
+        {
+          "id": "2714",
+          "en": "Family Practice",
+          "pt": "medicina de família"
+        },
+        {
+          "id": "2706",
+          "en": "Critical Care and Intensive Care Medicine",
+          "pt": "medicina intensiva"
+        },
+        {
+          "id": "2743",
+          "en": "Reproductive Medicine",
+          "pt": "medicina reprodutiva"
+        },
+        {
+          "id": "2726",
+          "en": "Microbiology",
+          "pt": "microbiologia"
+        },
+        {
+          "id": "2727",
+          "en": "Nephrology",
+          "pt": "nefrologia"
+        },
+        {
+          "id": "2728",
+          "en": "Neurology",
+          "pt": "neurologia"
+        },
+        {
+          "id": "2729",
+          "en": "Obstetrics and Gynecology",
+          "pt": "obstetrícia e ginecologia"
+        },
+        {
+          "id": "2731",
+          "en": "Ophthalmology",
+          "pt": "oftalmologia"
+        },
+        {
+          "id": "2730",
+          "en": "Oncology",
+          "pt": "oncologia"
+        },
+        {
+          "id": "2732",
+          "en": "Orthopedics and Sports Medicine",
+          "pt": "ortopedia e medicina esportiva"
+        },
+        {
+          "id": "2733",
+          "en": "Otorhinolaryngology",
+          "pt": "otorrinolaringologia"
+        },
+        {
+          "id": "2734",
+          "en": "Pathology and Forensic Medicine",
+          "pt": "patologia e medicina legal"
+        },
+        {
+          "id": "2735",
+          "en": "Pediatrics, Perinatology and Child Health",
+          "pt": "pediatria, perinatologia e saúde infantil"
+        },
+        {
+          "id": "2740",
+          "en": "Pulmonary and Respiratory Medicine",
+          "pt": "pneumologia"
+        },
+        {
+          "id": "2738",
+          "en": "Psychiatry and Mental health",
+          "pt": "psiquiatria e saúde mental"
+        },
+        {
+          "id": "2741",
+          "en": "Radiology, Nuclear Medicine and Imaging",
+          "pt": "radiologia, medicina nuclear e imagem"
+        },
+        {
+          "id": "2742",
+          "en": "Rehabilitation",
+          "pt": "reabilitação"
+        },
+        {
+          "id": "2745",
+          "en": "Rheumatology",
+          "pt": "reumatologia"
+        },
+        {
+          "id": "2739",
+          "en": "Public Health, Environmental and Occupational Health",
+          "pt": "saúde pública, ambiental e ocupacional"
+        },
+        {
+          "id": "2747",
+          "en": "Transplantation",
+          "pt": "transplantes"
+        },
+        {
+          "id": "2748",
+          "en": "Urology",
+          "pt": "urologia"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "en": "Business, Management and Accounting",
+      "pt": "negócios, gestão e contabilidade",
+      "generos": [
+        {
+          "id": "1407",
+          "en": "Organizational Behavior and Human Resource Management",
+          "pt": "comportamento organizacional e gestão de pessoas"
+        },
+        {
+          "id": "1402",
+          "en": "Accounting",
+          "pt": "contabilidade"
+        },
+        {
+          "id": "1408",
+          "en": "Strategy and Management",
+          "pt": "estratégia e gestão"
+        },
+        {
+          "id": "1405",
+          "en": "Management of Technology and Innovation",
+          "pt": "gestão da tecnologia e inovação"
+        },
+        {
+          "id": "1406",
+          "en": "Marketing",
+          "pt": "marketing"
+        },
+        {
+          "id": "1403",
+          "en": "Business and International Management",
+          "pt": "negócios e gestão internacional"
+        },
+        {
+          "id": "1410",
+          "en": "Industrial relations",
+          "pt": "relações de trabalho"
+        },
+        {
+          "id": "1404",
+          "en": "Management Information Systems",
+          "pt": "sistemas de informação gerencial"
+        },
+        {
+          "id": "1409",
+          "en": "Tourism, Leisure and Hospitality Management",
+          "pt": "turismo, lazer e hotelaria"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "en": "Neuroscience",
+      "pt": "neurociência",
+      "generos": [
+        {
+          "id": "2804",
+          "en": "Cellular and Molecular Neuroscience",
+          "pt": "neurociência celular e molecular"
+        },
+        {
+          "id": "2805",
+          "en": "Cognitive Neuroscience",
+          "pt": "neurociência cognitiva"
+        },
+        {
+          "id": "2802",
+          "en": "Behavioral Neuroscience",
+          "pt": "neurociência comportamental"
+        },
+        {
+          "id": "2806",
+          "en": "Developmental Neuroscience",
+          "pt": "neurociência do desenvolvimento"
+        },
+        {
+          "id": "2808",
+          "en": "Neurology",
+          "pt": "neurologia"
+        },
+        {
+          "id": "2803",
+          "en": "Biological Psychiatry",
+          "pt": "psiquiatria biológica"
+        },
+        {
+          "id": "2807",
+          "en": "Endocrine and Autonomic Systems",
+          "pt": "sistemas endócrino e autônomo"
+        },
+        {
+          "id": "2809",
+          "en": "Sensory Systems",
+          "pt": "sistemas sensoriais"
+        }
+      ]
+    },
+    {
+      "id": "35",
+      "en": "Dentistry",
+      "pt": "odontologia",
+      "generos": [
+        {
+          "id": "3504",
+          "en": "Oral Surgery",
+          "pt": "cirurgia oral"
+        },
+        {
+          "id": "3500",
+          "en": "General Dentistry",
+          "pt": "odontologia (geral)"
+        },
+        {
+          "id": "3505",
+          "en": "Orthodontics",
+          "pt": "ortodontia"
+        },
+        {
+          "id": "3506",
+          "en": "Periodontics",
+          "pt": "periodontia"
+        }
+      ]
+    },
+    {
+      "id": "36",
+      "en": "Health Professions",
+      "pt": "profissões da saúde",
+      "generos": [
+        {
+          "id": "3611",
+          "en": "Pharmacy",
+          "pt": "farmácia"
+        },
+        {
+          "id": "3612",
+          "en": "Physical Therapy, Sports Therapy and Rehabilitation",
+          "pt": "fisioterapia, terapia esportiva e reabilitação"
+        },
+        {
+          "id": "3616",
+          "en": "Speech and Hearing",
+          "pt": "fonoaudiologia"
+        },
+        {
+          "id": "3605",
+          "en": "Health Information Management",
+          "pt": "gestão da informação em saúde"
+        },
+        {
+          "id": "3600",
+          "en": "General Health Professions",
+          "pt": "profissões da saúde (geral)"
+        },
+        {
+          "id": "3604",
+          "en": "Emergency Medical Services",
+          "pt": "serviços médicos de emergência"
+        },
+        {
+          "id": "3607",
+          "en": "Medical Laboratory Technology",
+          "pt": "tecnologia de laboratório clínico"
+        },
+        {
+          "id": "3614",
+          "en": "Radiological and Ultrasound Technology",
+          "pt": "tecnologia em radiologia e ultrassom"
+        },
+        {
+          "id": "3609",
+          "en": "Occupational Therapy",
+          "pt": "terapia ocupacional"
+        },
+        {
+          "id": "3603",
+          "en": "Complementary and Manual Therapy",
+          "pt": "terapias complementares e manuais"
+        },
+        {
+          "id": "3608",
+          "en": "Medical Terminology",
+          "pt": "terminologia médica"
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "en": "Psychology",
+      "pt": "psicologia",
+      "generos": [
+        {
+          "id": "3206",
+          "en": "Neuropsychology and Physiological Psychology",
+          "pt": "neuropsicologia e psicofisiologia"
+        },
+        {
+          "id": "3200",
+          "en": "General Psychology",
+          "pt": "psicologia (geral)"
+        },
+        {
+          "id": "3202",
+          "en": "Applied Psychology",
+          "pt": "psicologia aplicada"
+        },
+        {
+          "id": "3203",
+          "en": "Clinical Psychology",
+          "pt": "psicologia clínica"
+        },
+        {
+          "id": "3204",
+          "en": "Developmental and Educational Psychology",
+          "pt": "psicologia do desenvolvimento e da educação"
+        },
+        {
+          "id": "3205",
+          "en": "Experimental and Cognitive Psychology",
+          "pt": "psicologia experimental e cognitiva"
+        },
+        {
+          "id": "3207",
+          "en": "Social Psychology",
+          "pt": "psicologia social"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "en": "Chemistry",
+      "pt": "química",
+      "generos": [
+        {
+          "id": "1603",
+          "en": "Electrochemistry",
+          "pt": "eletroquímica"
+        },
+        {
+          "id": "1607",
+          "en": "Spectroscopy",
+          "pt": "espectroscopia"
+        },
+        {
+          "id": "1606",
+          "en": "Physical and Theoretical Chemistry",
+          "pt": "físico-química e química teórica"
+        },
+        {
+          "id": "1602",
+          "en": "Analytical Chemistry",
+          "pt": "química analítica"
+        },
+        {
+          "id": "1604",
+          "en": "Inorganic Chemistry",
+          "pt": "química inorgânica"
+        },
+        {
+          "id": "1605",
+          "en": "Organic Chemistry",
+          "pt": "química orgânica"
+        }
+      ]
+    },
+    {
+      "id": "34",
+      "en": "Veterinary",
+      "pt": "veterinária",
+      "generos": [
+        {
+          "id": "3402",
+          "en": "Equine",
+          "pt": "equinos"
+        },
+        {
+          "id": "3404",
+          "en": "Small Animals",
+          "pt": "pequenos animais"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+.jev-busy {
+	opacity: 0.4;
+	pointer-events: none;
+}
+
+.jev-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--size-4-2);
+	margin-top: var(--size-4-3);
+}
+
+.jev-muted {
+	color: var(--text-muted);
+}
+
+.jev-option {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-bottom: var(--size-4-2);
+	height: auto;
+	padding: var(--size-4-2) var(--size-4-3);
+}
+
+.jev-option-p {
+	color: var(--text-muted);
+	font-variant-numeric: tabular-nums;
+}
