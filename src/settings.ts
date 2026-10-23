@@ -32,7 +32,7 @@ export const DEFAULT_SETTINGS: JevSettings = {
 	tagExcecoes: { lugares: 'lugar' },
 	tagCampo: 'genero',
 	tagLimiar: 0.5,
-	lang: 'pt',
+	lang: 'en',
 	onboarded: false,
 };
 
