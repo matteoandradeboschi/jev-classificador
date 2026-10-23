@@ -1,6 +1,6 @@
 {
 	"name": "jev-classificador",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Classifica notas (genero e categoria) com o Jev da TypeSafe",
 	"main": "main.js",
 	"type": "module",
