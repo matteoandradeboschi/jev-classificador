@@ -131,7 +131,7 @@
             { "tag": "especificacao", "desc": "Requisitos e desenho de um software ou projeto." },
             { "tag": "relato", "desc": "Experiência vivida contada pela própria pessoa." },
             { "tag": "comparacao", "desc": "Compara opções, ferramentas ou ideias lado a lado." },
-            { "tag": "site", "desc": "Apresenta ou guarda um site, app web ou serviço online específico: o que é, link, para que serve." }
+            { "tag": "definicao", "desc": "Explica o que é um conceito ou termo." }
           ]
         }
       ]
