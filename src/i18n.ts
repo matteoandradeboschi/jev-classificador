@@ -30,7 +30,7 @@ const pt = {
 	// Configurações
 	idioma: 'Idioma da taxonomia',
 	idiomaDesc:
-		'Taxonomia, wordlist das tags de assunto, instruções enviadas ao Jev e esta interface. Notas já classificadas não são traduzidas. Os nomes dos comandos mudam ao recarregar o plugin.',
+		'Taxonomia, wordlist das tags de assunto, instruções enviadas ao Jev e esta interface. Notas já classificadas não são traduzidas. Os nomes dos comandos ficam sempre em inglês.',
 	chave: 'Chave TypeSafe',
 	chaveDesc:
 		'Guardada no armazenamento de segredos do Obsidian, não no data.json do vault (que vai no backup). Crie em console.typesafe.ai/keys.',
@@ -110,7 +110,7 @@ const en: typeof pt = {
 
 	idioma: 'Taxonomy language',
 	idiomaDesc:
-		'Taxonomy, topic tag wordlist, instructions sent to Jev and this interface. Notes already classified are not translated. Command names change after reloading the plugin.',
+		'Taxonomy, topic tag wordlist, instructions sent to Jev and this interface. Notes already classified are not translated. Command names are always in English.',
 	chave: 'TypeSafe key',
 	chaveDesc:
 		"Stored in Obsidian's secret storage, not in the vault's data.json (which ends up in backups). Create one at console.typesafe.ai/keys.",
@@ -162,7 +162,9 @@ const en: typeof pt = {
 };
 
 const UI: Record<Lang, typeof pt> = { pt, en };
-let atual: Lang = 'pt';
+let atual: Lang = 'en';
 
 export const setLang = (l: Lang) => (atual = l);
 export const t = () => UI[atual];
+/** Nomes dos comandos: sempre em inglês (registrados uma vez, no onload). */
+export const tEn = () => UI.en;

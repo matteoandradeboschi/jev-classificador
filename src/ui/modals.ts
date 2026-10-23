@@ -48,7 +48,7 @@ export class KeyModal extends AwaitableModal<string | null> {
 			cls: 'jev-muted',
 			text: t().keyNota,
 		});
-		new SecretComponent(this.app, contentEl.createDiv()).setValue(this.nome).onChange((n) => (this.nome = n));
+		new SecretComponent(this.app, contentEl.createDiv()).setValue(this.nome).onChange((n) => (this.nome = n ?? ''));
 		const row = contentEl.createDiv({ cls: 'jev-buttons' });
 		row.createEl('button', { text: t().cancelar }).onclick = () => this.settle(null);
 		row.createEl('button', { text: t().pronto, cls: 'mod-cta' }).onclick = () => this.settle(this.nome);

@@ -1,4 +1,4 @@
-import { getLanguage, MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
+import { MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
 import { classify, JevError, parseOuErro, RawResponse, sendWithRetry } from './core/classify';
 import { isClassified, isExcluded, precisaConfirmar } from './core/jev';
 import { ordenarBloco } from './core/frontmatter';
@@ -17,7 +17,7 @@ import taxJson from './taxonomia.json';
 import taxEnJson from './taxonomia.en.json';
 import taxTagsJson from './taxonomia-tags.json';
 import taxTagsEnJson from './taxonomia-tags.en.json';
-import { setLang, t } from './i18n';
+import { setLang, t, tEn } from './i18n';
 import { DEFAULT_SETTINGS, JevSettings, JevSettingTab } from './settings';
 import { ConfirmModal, ConfirmOverwriteModal, KeyModal, PickParModal, PickTagsModal } from './ui/modals';
 
@@ -39,7 +39,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'classificar',
-			name: t().cmdClassificar,
+			name: tEn().cmdClassificar,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -50,7 +50,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'gerar-tags',
-			name: t().cmdGerarTags,
+			name: tEn().cmdGerarTags,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -61,7 +61,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'gerar-tags-assunto',
-			name: t().cmdGerarTagsAssunto,
+			name: tEn().cmdGerarTagsAssunto,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -312,10 +312,7 @@ export default class JevClassificador extends Plugin {
 	}
 
 	async loadSettings() {
-		const data = (await this.loadData()) as Partial<JevSettings> | null;
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, data);
-		// Sem escolha salva: segue o idioma do Obsidian.
-		if (!data?.lang) this.settings.lang = getLanguage().startsWith('pt') ? 'pt' : 'en';
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) as Partial<JevSettings> | null);
 		setLang(this.settings.lang);
 	}
 

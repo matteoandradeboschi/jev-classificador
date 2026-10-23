@@ -25,7 +25,7 @@ Hotkeys: none by default. Set them in **Settings → Hotkeys** (search for "Jev"
 
 ## Language
 
-The **Taxonomy language** setting (Português/English) picks the taxonomy, the topic-tag wordlist, the instructions sent to Jev and the UI language. With no saved choice, it follows Obsidian's language. Command names change after reloading the plugin; command ids (`classificar`, `gerar-tags`, `gerar-tags-assunto`) don't, so your hotkeys keep working.
+The **Taxonomy language** setting (Português/English) picks the taxonomy, the topic-tag wordlist, the instructions sent to Jev and the UI language. Default: English. Command names are always in English; command ids (`classificar`, `gerar-tags`, `gerar-tags-assunto`) never change, so your hotkeys keep working.
 
 Switching language **does not translate notes already classified**:
 

@@ -34,6 +34,9 @@ async function setup({ key = null, fm }: Opts = {}) {
 	};
 	const plugin = new JevClassificador(app as never);
 	await plugin.loadSettings();
+	// Testes antigos assumem PT; o padrão do plugin é EN (testado à parte).
+	plugin.settings.lang = 'pt';
+	setLang('pt');
 	plugin.settings.excludedFolders = ['1-diario', '4-pessoas'];
 	return { plugin, reads, written };
 }
@@ -234,8 +237,9 @@ describe('idioma EN', () => {
 		expect(notices).toEqual(['Jev: private folder, nothing sent']);
 	});
 
-	it('sem lang salvo: segue o idioma do Obsidian (stub pt-BR → pt)', async () => {
-		const { plugin } = await setup();
-		expect(plugin.settings.lang).toBe('pt');
+	it('sem lang salvo: padrão EN', async () => {
+		const plugin = new JevClassificador({} as never);
+		await plugin.loadSettings();
+		expect(plugin.settings.lang).toBe('en');
 	});
 });
