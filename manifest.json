@@ -1,7 +1,7 @@
 {
 	"id": "jev-classificador",
 	"name": "Jev Classificador",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"minAppVersion": "1.11.4",
 	"description": "Classifica a nota com o Jev (TypeSafe): grava genero e categoria (taxonomia em PT-BR) e gera tags de pasta e de assunto no frontmatter.",
 	"author": "Matteo Andrade Boschi",
