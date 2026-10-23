@@ -1,6 +1,6 @@
 # Jev Classificador
 
-Plugin do Obsidian. Botão no topo direito da nota (e comando "Classificar gênero e categoria"): 1 requisição ao Jev (TypeSafe System One) escolhe `categoria` (13 áreas) e `genero` (89 subáreas), em PT-BR, e grava no frontmatter.
+Plugin do Obsidian. Botão no topo direito da nota (e comando "Classificar gênero e categoria"): 1 requisição ao Jev (TypeSafe System One) escolhe `categoria` (13 áreas) e `genero` (89 subáreas), em EN e PT-BR, e grava no frontmatter.
 
 ## Instalar
 
