@@ -2,12 +2,14 @@ export interface Genero {
 	id: string;
 	en: string;
 	pt: string;
+	desc: string;
 }
 
 export interface Categoria {
 	id: string;
 	en: string;
 	pt: string;
+	desc: string;
 	generos: Genero[];
 }
 
@@ -23,7 +25,7 @@ export interface Question {
 
 export interface JevRequest {
 	model: string;
-	state: { titulo: string; tags: string[]; corpo: string };
+	state: { titulo: string; pasta?: string; tags: string[]; corpo: string };
 	questions: Record<string, Question>;
 }
 

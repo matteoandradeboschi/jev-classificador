@@ -10,11 +10,15 @@ export class Notice {
 }
 export class TFile {
 	extension = 'md';
+	parent: { path: string };
 	constructor(
 		public path: string,
 		public basename = path.split('/').pop()!.replace(/\.md$/, ''),
-	) {}
+	) {
+		this.parent = { path: path.split('/').slice(0, -1).join('/') || '/' };
+	}
 }
+export class TFolder {}
 export class Modal {
 	contentEl = { empty() {} };
 	constructor(public app: unknown) {}

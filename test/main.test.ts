@@ -85,8 +85,8 @@ describe('fluxo run()', () => {
 			text: '',
 			json: {
 				answers: {
-					categoria: probs('ciência da computação'),
-					genero_17: probs('software'),
+					categoria: probs('tecnologia'),
+					genero_tecnologia: probs('programação'),
 				},
 			},
 		};
@@ -94,7 +94,51 @@ describe('fluxo run()', () => {
 		await plugin.run(new TFile('2-estudos/Pentest.md'));
 		expect(requests).toHaveLength(1);
 		expect(JSON.parse(requests[0]!.body).state.titulo).toBe('Pentest');
-		expect(written).toEqual([{ genero: 'software', categoria: 'ciência da computação' }]);
-		expect(notices.at(-1)).toBe('Jev: software · ciência da computação (conf. 0.95 / 0.95)');
+		expect(JSON.parse(requests[0]!.body).state.pasta).toBe('2-estudos');
+		expect(written).toEqual([{ genero: 'programação', categoria: 'tecnologia' }]);
+		expect(notices.at(-1)).toBe('Jev: tecnologia · programação (conf. 0.95 / 0.95)');
+	});
+
+	it('toggle "enviar pasta" desligado: pasta não sai', async () => {
+		state.response = { status: 401, text: '', json: null };
+		const { plugin } = await setup({ key: 'k' });
+		plugin.settings.sendFolder = false;
+		await plugin.run(new TFile('1-conceitos/carreira/Networking.md'));
+		const body = JSON.parse(requests[0]!.body);
+		expect(body.state).not.toHaveProperty('pasta');
+		expect(body.questions.categoria.instructions).not.toContain('`pasta`');
+	});
+});
+
+describe('fluxo gerarTags() (Alt+T)', () => {
+	it('não chama a API e troca só as tags do prefixo', async () => {
+		const { plugin, reads, written } = await setup({
+			fm: { categoria: 'tecnologia', genero: 'programação', 'ai-generated': true },
+		});
+		const fm: Record<string, unknown> = { tags: ['projeto/x', 'recurso/velha'] };
+		(plugin.app as any).fileManager.processFrontMatter = (_f: TFile, fn: (x: Record<string, unknown>) => void) => {
+			fn(fm);
+			written.push(fm);
+			return Promise.resolve();
+		};
+		await plugin.gerarTags(new TFile('1-recursos/O que aprender.md'));
+		expect(requests).toEqual([]);
+		expect(reads).toEqual([]);
+		expect(fm.tags).toEqual(['projeto/x', 'ai-generated', 'recurso/programacao']);
+		expect(notices.at(-1)).toBe('Tags: #ai-generated #recurso/programacao');
+	});
+
+	it('sem categoria: avisa e não grava', async () => {
+		const { plugin, written } = await setup({ fm: {} });
+		await plugin.gerarTags(new TFile('1-conceitos/x.md'));
+		expect(written).toEqual([]);
+		expect(notices.at(-1)).toBe('Tags: nota sem gênero — classifique antes (Alt+C)');
+	});
+
+	it('pasta privada: ignora', async () => {
+		const { plugin, written } = await setup({ fm: { categoria: 'artes', genero: 'música' } });
+		await plugin.gerarTags(new TFile('4-pessoas/Ana.md'));
+		expect(written).toEqual([]);
+		expect(notices.at(-1)).toBe('Tags: pasta privada, ignorada');
 	});
 });

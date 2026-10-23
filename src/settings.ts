@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, SecretComponent, Setting } from 'obsidian';
 import type JevClassificador from './main';
+import { CampoTag, parseExcecoes } from './core/tags';
 
 export interface JevSettings {
 	/** Nome do segredo no SecretStorage do Obsidian (o valor da chave não fica no data.json). */
@@ -8,6 +9,11 @@ export interface JevSettings {
 	threshold: number;
 	excludedFolders: string[];
 	maxBodyChars: number;
+	sendFolder: boolean;
+	/** Alt+T: nome da pasta (sem número) → prefixo da tag, quando "tirar o s" erra. */
+	tagExcecoes: Record<string, string>;
+	/** Alt+T: pasta/genero ou pasta/categoria. */
+	tagCampo: CampoTag;
 }
 
 export const DEFAULT_SETTINGS: JevSettings = {
@@ -16,6 +22,9 @@ export const DEFAULT_SETTINGS: JevSettings = {
 	threshold: 0.6,
 	excludedFolders: ['1-diario', '4-pessoas'],
 	maxBodyChars: 12000,
+	sendFolder: true,
+	tagExcecoes: { lugares: 'lugar' },
+	tagCampo: 'genero',
 };
 
 export class JevSettingTab extends PluginSettingTab {
@@ -54,7 +63,7 @@ export class JevSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Limiar de confiança')
-			.setDesc('Abaixo disso (categoria ou gênero), pede para escolher entre as 3 melhores. Valor inicial é um chute; ajuste depois de usar em notas reais.')
+			.setDesc('Se p(categoria) × p(gênero) do par vencedor ficar abaixo disso, pede para escolher entre as 3 melhores. Valor inicial é um chute; ajuste depois de usar em notas reais.')
 			.addSlider((sl) =>
 				sl
 					.setLimits(0, 1, 0.05)
@@ -89,5 +98,59 @@ export class JevSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				}),
 			);
+
+		new Setting(containerEl)
+			.setName('Enviar pasta da nota')
+			.setDesc('Manda o caminho da pasta (ex.: 1-conceitos/carreira) como contexto. Ajuda em títulos ambíguos.')
+			.addToggle((t) =>
+				t.setValue(s.sendFolder).onChange(async (v) => {
+					s.sendFolder = v;
+					await this.plugin.saveSettings();
+				}),
+			);
+
+		new Setting(containerEl)
+			.setName('Atalho de teclado')
+			.setDesc('Padrão: Alt+C. Classifica a nota aberta. Clique para trocar na tela de Atalhos do Obsidian.')
+			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+
+		new Setting(containerEl).setName('Tags').setHeading();
+
+		new Setting(containerEl)
+			.setName('Atalho das tags')
+			.setDesc('Padrão: Alt+T. Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API.')
+			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+
+		new Setting(containerEl)
+			.setName('Tag usa')
+			.setDesc('O que vem depois da barra: conceito/infraestrutura (gênero) ou conceito/tecnologia (categoria).')
+			.addDropdown((d) =>
+				d
+					.addOptions({ genero: 'Gênero', categoria: 'Categoria' })
+					.setValue(s.tagCampo)
+					.onChange(async (v) => {
+						s.tagCampo = v as CampoTag;
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName('Exceções do singular')
+			.setDesc('Uma por linha, pasta=prefixo. Por padrão só tira o "s" final (conceitos → conceito).')
+			.addTextArea((t) =>
+				t
+					.setValue(Object.entries(s.tagExcecoes).map(([k, v]) => `${k}=${v}`).join('\n'))
+					.onChange(async (v) => {
+						s.tagExcecoes = parseExcecoes(v);
+						await this.plugin.saveSettings();
+					}),
+			);
+	}
+
+	private abrirAtalhos() {
+		const setting = (this.app as unknown as {
+			setting?: { openTabById(id: string): { setQuery?(q: string): void } | undefined };
+		}).setting;
+		setting?.openTabById('hotkeys')?.setQuery?.(this.plugin.manifest.name);
 	}
 }

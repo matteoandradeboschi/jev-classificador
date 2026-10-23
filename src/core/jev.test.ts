@@ -8,14 +8,15 @@ import {
 	isExcluded,
 	normalizeTags,
 	parseResponse,
+	planejarAchatar,
 	precisaConfirmar,
 	stripFrontmatter,
 } from './jev';
 import { ChoiceAnswer, JevRequest, JevResponse, Taxonomia } from './types';
 
 const tax = taxJson as unknown as Taxonomia;
-const cs = tax.categorias.find((c) => c.pt === 'ciência da computação')!;
-const hum = tax.categorias.find((c) => c.pt === 'artes e humanidades')!;
+const cs = tax.categorias.find((c) => c.pt === 'tecnologia')!;
+const hum = tax.categorias.find((c) => c.pt === 'pensamento')!;
 
 function ans(probs: Record<string, number>, confidence: number): ChoiceAnswer {
 	const choice = Object.entries(probs).sort((a, b) => b[1] - a[1])[0]![0];
@@ -26,8 +27,8 @@ function fakeResponse(over: Record<string, ChoiceAnswer> = {}): JevResponse {
 	return {
 		answers: {
 			categoria: ans({ [cs.pt]: 0.8, [hum.pt]: 0.15, nenhuma: 0.05 }, 0.9),
-			[`genero_${cs.id}`]: ans({ 'redes de computadores e comunicações': 0.7, software: 0.3 }, 0.8),
-			[`genero_${hum.id}`]: ans({ filosofia: 0.9, história: 0.1 }, 0.9),
+			[`genero_${cs.id}`]: ans({ 'infraestrutura': 0.7, 'programação': 0.3 }, 0.8),
+			[`genero_${hum.id}`]: ans({ filosofia: 0.9, 'religião': 0.1 }, 0.9),
 			...over,
 		},
 	};
@@ -38,23 +39,23 @@ const err = (status: number, text = ''): RawResponse => ({ status, text, json: n
 
 describe('buildQuestions', () => {
 	const q = buildQuestions(tax);
-	it('1 categoria + 26 gêneros', () => {
-		expect(Object.keys(q)).toHaveLength(27);
+	it('1 categoria + 13 gêneros', () => {
+		expect(Object.keys(q)).toHaveLength(14);
 		expect(q.categoria?.type).toBe('choice');
 	});
-	it('categoria inclui "nenhuma" e usa pt→en', () => {
-		expect(Object.keys(q.categoria!.criteria)).toHaveLength(27);
+	it('categoria inclui "nenhuma" e usa pt→desc', () => {
+		expect(Object.keys(q.categoria!.criteria)).toHaveLength(14);
 		expect(q.categoria!.criteria['nenhuma']).toBeTruthy();
-		expect(q.categoria!.criteria[cs.pt]).toBe(cs.en);
+		expect(q.categoria!.criteria[cs.pt]).toBe(cs.desc);
 	});
 	it('pergunta de gênero é autossuficiente e nomeia a categoria', () => {
 		const g = q[`genero_${cs.id}`]!;
 		expect(g.instructions).toContain(`"${cs.pt}"`);
 		expect(Object.keys(g.criteria)).toHaveLength(cs.generos.length);
 	});
-	it('252 gêneros no total e ≤255 critérios por pergunta', () => {
+	it('89 gêneros no total e ≤255 critérios por pergunta', () => {
 		const total = tax.categorias.reduce((n, c) => n + c.generos.length, 0);
-		expect(total).toBe(252);
+		expect(total).toBe(89);
 		for (const v of Object.values(q)) expect(Object.keys(v.criteria).length).toBeLessThanOrEqual(255);
 	});
 });
@@ -83,6 +84,12 @@ describe('buildRequest', () => {
 		expect(stripFrontmatter('---\na: 1\n---\ncorpo\n---\nfim')).toBe('corpo\n---\nfim');
 		expect(stripFrontmatter('sem fm')).toBe('sem fm');
 		expect(stripFrontmatter('---\r\na: 1\r\n---\r\ncorpo')).toBe('corpo');
+	});
+	it('com pasta: vai no state e as instruções citam `pasta`', () => {
+		const r = buildRequest(tax, { basename: 'Networking', content: '', folder: '1-conceitos/carreira' }, 'm', 100);
+		expect(r.state.pasta).toBe('1-conceitos/carreira');
+		expect(r.questions.categoria!.instructions).toContain('`pasta`');
+		expect(r.questions[`genero_${cs.id}`]!.instructions).toContain('`pasta`');
 	});
 	it('normalizeTags aceita string e lista', () => {
 		expect(normalizeTags('a, #b c')).toEqual(['a', 'b', 'c']);
@@ -120,7 +127,7 @@ describe('parseResponse', () => {
 		const r = parseResponse(tax, fakeResponse())!;
 		expect(r.melhor).toMatchObject({
 			categoria: cs.pt,
-			genero: 'redes de computadores e comunicações',
+			genero: 'infraestrutura',
 			confCategoria: 0.9,
 			confGenero: 0.8,
 		});
@@ -128,8 +135,8 @@ describe('parseResponse', () => {
 	it('top3 ordenado por p(cat)×p(gen|cat), com pares de categorias diferentes', () => {
 		const r = parseResponse(tax, fakeResponse())!;
 		expect(r.top3.map((p) => [p.categoria, p.genero])).toEqual([
-			[cs.pt, 'redes de computadores e comunicações'], // .56
-			[cs.pt, 'software'], // .24
+			[cs.pt, 'infraestrutura'], // .56
+			[cs.pt, 'programação'], // .24
 			[hum.pt, 'filosofia'], // .135
 		]);
 	});
@@ -144,10 +151,11 @@ describe('parseResponse', () => {
 			parseResponse(tax, fakeResponse({ [`genero_${cs.id}`]: ans({ inventado: 1 }, 1) })),
 		).toThrow();
 	});
-	it('precisaConfirmar: confiança de qualquer um abaixo do limiar', () => {
-		const r = parseResponse(tax, fakeResponse())!;
-		expect(precisaConfirmar(r, 0.6)).toBe(false);
-		expect(precisaConfirmar(r, 0.85)).toBe(true); // confGenero 0.8
+	it('precisaConfirmar: p(cat)×p(gen) do vencedor abaixo do limiar', () => {
+		const r = parseResponse(tax, fakeResponse())!; // .8 × .7 = .56
+		expect(precisaConfirmar(r, 0.5)).toBe(false);
+		expect(precisaConfirmar(r, 0.56)).toBe(false); // igual ao limiar passa
+		expect(precisaConfirmar(r, 0.6)).toBe(true); // confidences .9/.8 ignoradas
 		const baixa = parseResponse(tax, fakeResponse({ categoria: ans({ [cs.pt]: 0.4, [hum.pt]: 0.35, nenhuma: 0.25 }, 0.3) }))!;
 		expect(precisaConfirmar(baixa, 0.6)).toBe(true);
 	});
@@ -160,7 +168,7 @@ describe('classify (retries e erros)', () => {
 	it('sucesso direto', async () => {
 		const send = vi.fn(async () => ok(fakeResponse()));
 		const r = await classify({ send, sleep }, opts);
-		expect(r?.melhor.genero).toBe('redes de computadores e comunicações');
+		expect(r?.melhor.genero).toBe('infraestrutura');
 		expect(send).toHaveBeenCalledTimes(1);
 	});
 	it('401 → auth, sem retry', async () => {
@@ -211,5 +219,24 @@ describe('classify (retries e erros)', () => {
 		const e = await classify({ send: async () => ok({ answers: {} }), sleep }, opts).catch((x: unknown) => x);
 		expect(e).toBeInstanceOf(JevError);
 		expect((e as JevError).kind).toBe('resposta');
+	});
+});
+
+describe('planejarAchatar', () => {
+	it('move .md de subpastas (qualquer nível) para a raiz; ignora raiz, outras pastas e não-.md', () => {
+		const r = planejarAchatar(
+			['1-conceitos/Momentum.md', '1-conceitos/carreira/Networking.md', '1-conceitos/a/b/Hash.md', '1-conceitos/a/img.png', '2-x/carreira/Y.md'],
+			'1-conceitos',
+		);
+		expect(r.mover).toEqual([
+			{ de: '1-conceitos/carreira/Networking.md', para: '1-conceitos/Networking.md' },
+			{ de: '1-conceitos/a/b/Hash.md', para: '1-conceitos/Hash.md' },
+		]);
+		expect(r.conflitos).toEqual([]);
+	});
+	it('nome já na raiz ou repetido entre subpastas: conflito, não move', () => {
+		const r = planejarAchatar(['1-conceitos/SSH.md', '1-conceitos/t/ssh.md', '1-conceitos/a/X.md', '1-conceitos/b/X.md'], '1-conceitos/');
+		expect(r.mover).toEqual([{ de: '1-conceitos/a/X.md', para: '1-conceitos/X.md' }]);
+		expect(r.conflitos).toEqual(['1-conceitos/t/ssh.md', '1-conceitos/b/X.md']);
 	});
 });

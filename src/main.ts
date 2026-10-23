@@ -1,6 +1,8 @@
 import { MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
 import { classify, JevError, RawResponse } from './core/classify';
 import { isClassified, isExcluded, precisaConfirmar } from './core/jev';
+import { ordenarBloco } from './core/frontmatter';
+import { aplicarTags, gerarTags } from './core/tags';
 import type { JevRequest, Par, Taxonomia } from './core/types';
 import taxJson from './taxonomia.json';
 import { DEFAULT_SETTINGS, JevSettings, JevSettingTab } from './settings';
@@ -23,10 +25,23 @@ export default class JevClassificador extends Plugin {
 		this.addCommand({
 			id: 'classificar',
 			name: 'Classificar gênero e categoria',
+			hotkeys: [{ modifiers: ['Alt'], key: 'C' }],
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
 				if (!checking) void this.run(file);
+				return true;
+			},
+		});
+
+		this.addCommand({
+			id: 'gerar-tags',
+			name: 'Gerar tags (pasta/categoria)',
+			hotkeys: [{ modifiers: ['Alt'], key: 'T' }],
+			checkCallback: (checking) => {
+				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
+				if (!file) return false;
+				if (!checking) void this.gerarTags(file);
 				return true;
 			},
 		});
@@ -117,7 +132,12 @@ export default class JevClassificador extends Plugin {
 				{ send: (r) => this.send(r, key), sleep: (ms) => new Promise((r) => window.setTimeout(r, ms)) },
 				{
 					tax,
-					note: { basename: file.basename, frontmatter: fm, content },
+					note: {
+						basename: file.basename,
+						frontmatter: fm,
+						content,
+						folder: this.settings.sendFolder ? (file.parent?.path ?? '') : undefined,
+					},
 					model: this.settings.model,
 					maxChars: this.settings.maxBodyChars,
 				},
@@ -131,22 +151,42 @@ export default class JevClassificador extends Plugin {
 				pGenero: result.melhor.confGenero,
 			};
 			if (precisaConfirmar(result, this.settings.threshold)) {
-				par = await new PickParModal(this.app, result.top3).ask();
+				par = await new PickParModal(this.app, result.top3, result.melhor, this.settings.threshold).ask();
 				if (!par) return;
 			}
 
 			await this.app.fileManager.processFrontMatter(file, (f: Record<string, unknown>) => {
-				f.genero = par.genero;
 				f.categoria = par.categoria;
+				f.genero = par.genero;
+				ordenarBloco(f);
 			});
 			new Notice(
-				`Jev: ${par.genero} · ${par.categoria} (conf. ${par.pCategoria.toFixed(2)} / ${par.pGenero.toFixed(2)})`,
+				`Jev: ${par.categoria} · ${par.genero} (conf. ${par.pCategoria.toFixed(2)} / ${par.pGenero.toFixed(2)})`,
 			);
 		} catch (e) {
 			this.reportError(e);
 		} finally {
 			this.setBusy(false);
 		}
+	}
+
+	/** Alt+T: tag "<pasta raiz>/<gênero ou categoria>" com o que o Jev já gravou. */
+	async gerarTags(file: TFile) {
+		if (file.extension !== 'md') return void new Notice('Tags: só funciona em notas .md');
+		if (isExcluded(file.path, this.settings.excludedFolders)) return void new Notice('Tags: pasta privada, ignorada');
+
+		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter ?? null;
+		const r = gerarTags(file.path, fm, this.settings.tagExcecoes, this.settings.tagCampo);
+		if ('erro' in r)
+			return void new Notice(
+				r.erro === 'raiz' ? 'Tags: nota fora de pasta, nada a fazer' : `Tags: nota sem ${this.settings.tagCampo === 'genero' ? 'gênero' : 'categoria'} — classifique antes (Alt+C)`,
+			);
+
+		await this.app.fileManager.processFrontMatter(file, (f: Record<string, unknown>) => {
+			f.tags = aplicarTags(f.tags, r.prefixo, r.tags);
+			ordenarBloco(f);
+		});
+		new Notice(`Tags: ${r.tags.map((t) => '#' + t).join(' ')}`);
 	}
 
 	private reportError(e: unknown) {

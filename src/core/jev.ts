@@ -12,27 +12,28 @@ import {
 
 export const generoQuestionId = (c: Categoria) => `genero_${c.id}`;
 
-export function buildQuestions(tax: Taxonomia): Record<string, Question> {
+export function buildQuestions(tax: Taxonomia, comPasta = false): Record<string, Question> {
 	const questions: Record<string, Question> = {};
+	const campos = comPasta ? '`titulo`, `pasta`, `tags`, `corpo`' : '`titulo`, `tags`, `corpo`';
 
 	const criteria: Record<string, string> = {};
-	for (const c of tax.categorias) criteria[c.pt] = c.en;
+	for (const c of tax.categorias) criteria[c.pt] = c.desc;
 	criteria[NENHUMA] =
 		'A nota não trata de nenhuma área do conhecimento desta lista (ex.: lista de compras, nota vazia sem título informativo).';
 	questions.categoria = {
 		type: 'choice',
 		instructions:
-			'Qual área ampla do conhecimento melhor descreve o assunto da nota (`titulo`, `tags`, `corpo`)?',
+			`Qual área ampla do conhecimento melhor descreve o assunto da nota (${campos})?`,
 		criteria,
 	};
 
 	// Ids de pergunta não chegam ao modelo: o texto precisa ser autossuficiente.
 	for (const c of tax.categorias) {
 		const sub: Record<string, string> = {};
-		for (const g of c.generos) sub[g.pt] = g.en;
+		for (const g of c.generos) sub[g.pt] = g.desc;
 		questions[generoQuestionId(c)] = {
 			type: 'choice',
-			instructions: `Supondo que a nota pertença à área "${c.pt}", qual subárea melhor descreve o assunto da nota (\`titulo\`, \`tags\`, \`corpo\`)?`,
+			instructions: `Supondo que a nota pertença à área "${c.pt}", qual subárea melhor descreve o assunto da nota (${campos})?`,
 			criteria: sub,
 		};
 	}
@@ -61,6 +62,8 @@ export interface NoteInput {
 	basename: string;
 	frontmatter?: Record<string, unknown> | null;
 	content: string;
+	/** Caminho da pasta da nota; ausente = não enviar. */
+	folder?: string;
 }
 
 export function buildRequest(
@@ -69,15 +72,36 @@ export function buildRequest(
 	model: string,
 	maxChars: number,
 ): JevRequest {
+	const comPasta = note.folder !== undefined;
 	return {
 		model,
 		state: {
 			titulo: note.basename,
+			...(comPasta && { pasta: note.folder }),
 			tags: normalizeTags(note.frontmatter?.tags),
 			corpo: stripFrontmatter(note.content).slice(0, Math.max(0, maxChars)),
 		},
-		questions: buildQuestions(tax),
+		questions: buildQuestions(tax, comPasta),
 	};
+}
+
+/** Notas .md em subpastas de `base` → raiz de `base`. Destino já ocupado vira conflito (não move). */
+export function planejarAchatar(paths: string[], base: string) {
+	const prefix = base.replace(/\/+$/, '') + '/';
+	const naRaiz = (p: string) => p.startsWith(prefix) && !p.slice(prefix.length).includes('/');
+	const ocupados = new Set(paths.filter(naRaiz).map((p) => p.toLowerCase()));
+	const mover: { de: string; para: string }[] = [];
+	const conflitos: string[] = [];
+	for (const p of paths) {
+		if (!p.startsWith(prefix) || naRaiz(p) || !p.endsWith('.md')) continue;
+		const para = prefix + p.split('/').pop();
+		if (ocupados.has(para.toLowerCase())) conflitos.push(p);
+		else {
+			ocupados.add(para.toLowerCase());
+			mover.push({ de: p, para });
+		}
+	}
+	return { mover, conflitos };
 }
 
 export function isExcluded(path: string, folders: string[]): boolean {
@@ -142,5 +166,6 @@ export function parseResponse(tax: Taxonomia, res: JevResponse): Resultado | nul
 }
 
 export function precisaConfirmar(r: Resultado, limiar: number): boolean {
-	return r.melhor.confCategoria < limiar || r.melhor.confGenero < limiar;
+	// Arredonda como o modal mostra: o que você vê é o que decide.
+	return Math.round(r.melhor.pCategoria * r.melhor.pGenero * 100) / 100 < limiar;
 }
