@@ -1,46 +1,44 @@
 # Jev Classificador
 
-Plugin do Obsidian. Botão no topo direito da nota (e comando "Classificar gênero e categoria"): 1 requisição ao Jev (TypeSafe System One) escolhe `categoria` (13 áreas) e `genero` (89 subáreas), em EN e PT-BR, e grava no frontmatter.
+Obsidian plugin. A button at the top right of the note (and the "Classify field and subfield" command) sends 1 request to Jev (TypeSafe System One), which picks a `categoria` (field, 13 options) and a `genero` (subfield, 89 options), in English or Brazilian Portuguese, and writes them to the frontmatter.
 
-## Instalar
+## Install
 
-1. Obsidian → **Configurações → Plugins da comunidade → Procurar** → "Jev Classificador" → **Instalar** → **Ativar**.
-2. Na janela que abre, crie a chave em https://console.typesafe.ai/keys e cole no segredo. Pronto.
+1. Obsidian → **Settings → Community plugins → Browse** → "Jev Classificador" → **Install** → **Enable**.
+2. In the window that opens, create a key at https://console.typesafe.ai/keys and paste it into the secret. Done.
 
-Atalhos: sem padrão. Defina em **Configurações → Atalhos** (busque "Jev"). Sugestão: Alt+C, Alt+T, Alt+A.
+Hotkeys: none by default. Set them in **Settings → Hotkeys** (search for "Jev"). Suggestion: Alt+C, Alt+T, Alt+A.
 
-## Privacidade
+## Privacy
 
-- Ao classificar (ou gerar tags de assunto), o plugin envia à API da TypeSafe (`api.typesafe.ai`): título da nota, tags, até N caracteres do corpo (padrão 12000) e, se ativado, o caminho da pasta. Nada é enviado sem você acionar o comando.
-- A chave fica no SecretStorage do Obsidian (não vai pro `data.json`).
-- **Pastas excluídas** (configurações): notas nelas nunca são lidas nem enviadas.
+- When classifying (or generating topic tags), the plugin sends to the TypeSafe API (`api.typesafe.ai`): the note title, its tags and up to N characters of the body (default 12000). The folder path is never sent. Nothing is sent unless you run the command.
+- The key is kept in Obsidian's SecretStorage (it does not go into `data.json`).
+- **Excluded folders** (settings): notes in them are never read or sent.
 
-## Funcionamento
+## How it works
 
-- Taxonomia: própria, com descrições (`desc`, enviadas ao Jev como critério), embutida em `src/taxonomia.json`. Cada categoria tem um gênero `geral`.
-- Confiança < limiar (padrão 0.6): modal com top 3.
-- Frontmatter: `categoria`, `genero`, `tags` ficam juntas, nessa ordem.
-- Comando "Gerar tags", sem API: tag `<pasta raiz sem número, no singular>/<gênero ou categoria>` em kebab-case sem acento (ex.: `1-conceitos/x` → `conceito/infraestrutura`). Troca só as tags do mesmo prefixo. Checkbox `ai-generated: true` → também `ai-generated`. Exceções do singular nas configurações (padrão `lugares=lugar`).
-- Comando "Gerar tags de assunto" (API): 1–3 tags planas de uma wordlist fechada (`src/taxonomia-tags.json`).
+- Taxonomy: custom, with descriptions (`desc`, sent to Jev as criteria), bundled in `src/taxonomia.en.json` (English) and `src/taxonomia.json` (Portuguese). Each field has a `general` subfield.
+- Confidence below the threshold (default 0.6): a modal with the top 3.
+- Frontmatter: `categoria`, `genero` and `tags` are kept together, in that order. The property names stay the same in both languages.
+- "Generate tags" command, no API: a `<root folder without number, singular>/<subfield or field>` tag in kebab-case without accents (e.g. `1-concepts/x` → `concept/infrastructure`). Only tags with the same prefix are replaced. Checkbox `ai-generated: true` → also `ai-generated`. Singular exceptions in the settings (default `lugares=lugar`).
+- "Generate topic tags" command (API): 1–3 flat tags from a closed wordlist (`src/taxonomia-tags.en.json` or `src/taxonomia-tags.json`).
 
-## Idioma / Language
+## Language
 
-Configuração **Idioma da taxonomia / Taxonomy language** (Português/English). Escolhe a taxonomia (`src/taxonomia.json` ou `src/taxonomia.en.json`), a wordlist das tags de assunto (`src/taxonomia-tags.json` ou `src/taxonomia-tags.en.json`), as instruções enviadas ao Jev e o idioma da interface. Sem escolha salva, segue o idioma do Obsidian. Os nomes dos comandos mudam ao recarregar o plugin; os ids (`classificar`, `gerar-tags`, `gerar-tags-assunto`) não mudam, então os atalhos continuam valendo.
+The **Taxonomy language** setting (Português/English) picks the taxonomy, the topic-tag wordlist, the instructions sent to Jev and the UI language. With no saved choice, it follows Obsidian's language. Command names change after reloading the plugin; command ids (`classificar`, `gerar-tags`, `gerar-tags-assunto`) don't, so your hotkeys keep working.
 
-Trocar o idioma **não traduz notas já classificadas**:
+Switching language **does not translate notes already classified**:
 
-- `categoria`/`genero` ficam no idioma em que foram gravados (ex.: `tecnologia` numa, `technology` noutra). Reclassifique (Alt+C) se quiser tudo num idioma.
-- Tags `pasta/gênero` (Alt+T) seguem o valor do frontmatter; como o Alt+T troca tudo do mesmo prefixo, rodar de novo após reclassificar limpa a tag antiga.
-- Tags de assunto (Alt+A): o plugin reconhece a wordlist **dos dois idiomas**, então rodar o Alt+A no idioma novo substitui as tags antigas (ex.: `#ia` → `#ai`) sem tocar nas outras.
-
-The **Taxonomy language** setting switches the taxonomy, the topic-tag wordlist, the instructions sent to Jev and the UI. Already-classified notes are not translated: re-run the commands to convert them. Topic tags from both languages are recognized, so Alt+A replaces old-language tags.
+- `categoria`/`genero` stay in the language they were written in (e.g. `tecnologia` in one note, `technology` in another). Re-classify (Alt+C) if you want everything in one language.
+- Folder/subfield tags (Alt+T) follow the frontmatter value; since Alt+T replaces everything with the same prefix, running it again after re-classifying removes the old tag.
+- Topic tags (Alt+A): the plugin recognizes the wordlists of **both languages**, so running Alt+A in the new language replaces the old tags (e.g. `#ia` → `#ai`) without touching the others.
 
 ## Dev
 
 ```bash
 npm install
-npm test        # vitest (lógica pura em src/core)
-npm run build   # gera main.js
+npm test        # vitest (pure logic in src/core)
+npm run build   # builds main.js
 ```
 
-Instalar manual: copiar `main.js`, `manifest.json`, `styles.css` para `<vault>/.obsidian/plugins/jev-classificador/`.
+Manual install: copy `main.js`, `manifest.json` and `styles.css` to `<vault>/.obsidian/plugins/jev-classificador/`.
