@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import JevClassificador from '../src/main';
+import { listarTags, tagQuestionId } from '../src/core/tagsAssunto';
+import type { TaxTags } from '../src/core/types';
+import taxTags from '../src/taxonomia-tags.json';
 import { notices, requests, state, TFile } from './obsidian-stub';
 
 interface Opts {
@@ -140,5 +143,66 @@ describe('fluxo gerarTags() (Alt+T)', () => {
 		await plugin.gerarTags(new TFile('4-pessoas/Ana.md'));
 		expect(written).toEqual([]);
 		expect(notices.at(-1)).toBe('Tags: pasta privada, ignorada');
+	});
+});
+
+describe('fluxo gerarTagsAssunto() (Alt+A)', () => {
+	/** Roda o Alt+A com resposta noul: p 0.1 para tudo, menos as tags em `over`. */
+	async function rodar(fmTags: unknown, over: Record<string, number>, path = '1-recursos/Comandos Basicos Linux.md') {
+		const { plugin, reads, written } = await setup({ key: 'k', fm: { tags: fmTags } });
+		const answers: Record<string, unknown> = {};
+		for (const t of listarTags(taxTags as unknown as TaxTags)) answers[tagQuestionId(t)] = { type: 'noul', noul: over[t.tag] ?? 0.1 };
+		state.response = { status: 200, text: '', json: { answers } };
+		const fm: Record<string, unknown> = { tags: fmTags };
+		(plugin.app as any).fileManager.processFrontMatter = (_f: TFile, fn: (x: Record<string, unknown>) => void) => {
+			fn(fm);
+			written.push(fm);
+			return Promise.resolve();
+		};
+		await plugin.gerarTagsAssunto(new TFile(path));
+		return { reads, written, fm };
+	}
+
+	it('pasta privada: nada lido, nada enviado', async () => {
+		const { plugin, reads, written } = await setup({ key: 'k' });
+		await plugin.gerarTagsAssunto(new TFile('1-diario/2026-10-22.md'));
+		expect(reads).toEqual([]);
+		expect(requests).toEqual([]);
+		expect(written).toEqual([]);
+		expect(notices).toEqual(['Tags: pasta privada, não enviado']);
+	});
+
+	it('confiante: grava as tags de assunto e mantém as outras', async () => {
+		const { fm } = await rodar(['recurso/linux', 'ai-generated'], { linux: 0.95, tutorial: 0.8, redes: 0.3 });
+		expect(requests).toHaveLength(1);
+		const body = JSON.parse(requests[0]!.body);
+		expect(Object.keys(body.questions)).toHaveLength(77);
+		expect(body.state.tags).toEqual(['recurso/linux', 'ai-generated']);
+		expect(fm.tags).toEqual(['recurso/linux', 'ai-generated', 'linux', 'tutorial']);
+		expect(notices.at(-1)).toBe('Tags: #linux #tutorial (0.95 / 0.80)');
+	});
+
+	it('já tem tag de assunto: pede confirmação; cancelado → nada sai', async () => {
+		const { reads, written } = await rodar(['ia'], { linux: 0.95 });
+		expect(reads).toEqual([]);
+		expect(requests).toEqual([]);
+		expect(written).toEqual([]);
+	});
+
+	it('nenhuma acima do limiar: abre escolha; cancelado → nada gravado', async () => {
+		const { written } = await rodar([], {});
+		expect(requests).toHaveLength(1);
+		expect(written).toEqual([]);
+	});
+
+	it('Alt+T em 3-carreira mantém #carreira', async () => {
+		const { plugin } = await setup({ fm: { categoria: 'trabalho', genero: 'emprego' } });
+		const fm: Record<string, unknown> = { tags: ['carreira', 'carreira/velha'] };
+		(plugin.app as any).fileManager.processFrontMatter = (_f: TFile, fn: (x: Record<string, unknown>) => void) => {
+			fn(fm);
+			return Promise.resolve();
+		};
+		await plugin.gerarTags(new TFile('3-carreira/GOL 994.md'));
+		expect(fm.tags).toEqual(['carreira', 'carreira/emprego']);
 	});
 });

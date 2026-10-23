@@ -1,20 +1,24 @@
 import {
 	Categoria,
 	ChoiceAnswer,
+	ChoiceQuestion,
 	JevRequest,
 	JevResponse,
+	JevState,
 	NENHUMA,
 	Par,
-	Question,
 	Resultado,
 	Taxonomia,
 } from './types';
 
 export const generoQuestionId = (c: Categoria) => `genero_${c.id}`;
 
-export function buildQuestions(tax: Taxonomia, comPasta = false): Record<string, Question> {
-	const questions: Record<string, Question> = {};
-	const campos = comPasta ? '`titulo`, `pasta`, `tags`, `corpo`' : '`titulo`, `tags`, `corpo`';
+export const camposState = (comPasta: boolean) =>
+	comPasta ? '`titulo`, `pasta`, `tags`, `corpo`' : '`titulo`, `tags`, `corpo`';
+
+export function buildQuestions(tax: Taxonomia, comPasta = false): Record<string, ChoiceQuestion> {
+	const questions: Record<string, ChoiceQuestion> = {};
+	const campos = camposState(comPasta);
 
 	const criteria: Record<string, string> = {};
 	for (const c of tax.categorias) criteria[c.pt] = c.desc;
@@ -66,22 +70,25 @@ export interface NoteInput {
 	folder?: string;
 }
 
+export function buildState(note: NoteInput, maxChars: number): JevState {
+	return {
+		titulo: note.basename,
+		...(note.folder !== undefined && { pasta: note.folder }),
+		tags: normalizeTags(note.frontmatter?.tags),
+		corpo: stripFrontmatter(note.content).slice(0, Math.max(0, maxChars)),
+	};
+}
+
 export function buildRequest(
 	tax: Taxonomia,
 	note: NoteInput,
 	model: string,
 	maxChars: number,
 ): JevRequest {
-	const comPasta = note.folder !== undefined;
 	return {
 		model,
-		state: {
-			titulo: note.basename,
-			...(comPasta && { pasta: note.folder }),
-			tags: normalizeTags(note.frontmatter?.tags),
-			corpo: stripFrontmatter(note.content).slice(0, Math.max(0, maxChars)),
-		},
-		questions: buildQuestions(tax, comPasta),
+		state: buildState(note, maxChars),
+		questions: buildQuestions(tax, note.folder !== undefined),
 	};
 }
 
@@ -143,7 +150,7 @@ export function parseResponse(tax: Taxonomia, res: JevResponse): Resultado | nul
 		const pCat = prob(cat, c.pt);
 		if (pCat <= 0) continue;
 		const g = res.answers?.[generoQuestionId(c)];
-		if (!g?.probabilities) continue;
+		if (g?.type !== 'choice' || !g.probabilities) continue;
 		for (const sub of c.generos) {
 			const pGen = prob(g, sub.pt);
 			if (pGen > 0)

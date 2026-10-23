@@ -22,7 +22,10 @@ export class TFolder {}
 export class Modal {
 	contentEl = { empty() {} };
 	constructor(public app: unknown) {}
-	open() {}
+	// Simula o usuário fechando o modal na hora (AwaitableModal resolve com o fallback).
+	open() {
+		(this as unknown as { onClose?: () => void }).onClose?.();
+	}
 	close() {}
 }
 export class Plugin {

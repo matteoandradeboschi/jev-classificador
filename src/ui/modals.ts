@@ -1,5 +1,6 @@
 import { App, Modal } from 'obsidian';
-import type { Par, Resultado } from '../core/types';
+import { ordenarEscolhidas, podeMarcar } from '../core/tagsAssunto';
+import type { CandidatoTag, Par, Resultado, TaxTags } from '../core/types';
 
 abstract class AwaitableModal<T> extends Modal {
 	private resolve!: (v: T) => void;
@@ -101,5 +102,57 @@ export class PickParModal extends AwaitableModal<Par | null> {
 		}
 		contentEl.createDiv({ cls: 'jev-buttons' }).createEl('button', { text: 'Cancelar' }).onclick =
 			() => this.settle(null);
+	}
+}
+
+export class PickTagsModal extends AwaitableModal<CandidatoTag[] | null> {
+	protected fallback = null;
+
+	constructor(
+		app: App,
+		private tax: TaxTags,
+		private opcoes: CandidatoTag[],
+		private limiar: number,
+	) {
+		super(app);
+	}
+
+	onOpen() {
+		const { contentEl } = this;
+		const { max_total } = this.tax.regras;
+		this.setTitle('Jev não tem certeza — escolha as tags');
+		contentEl.createEl('p', {
+			cls: 'jev-muted',
+			text: `Nenhuma tag passou do limiar ${this.limiar.toFixed(2)}. Marque até ${max_total} (no máximo ${this.tax.regras.max_por_faceta.forma ?? max_total} de forma).`,
+		});
+
+		const marcadas: CandidatoTag[] = [];
+		const caixas: { c: CandidatoTag; input: HTMLInputElement }[] = [];
+		const row = contentEl.createDiv({ cls: 'jev-buttons' });
+		row.createEl('button', { text: 'Cancelar' }).onclick = () => this.settle(null);
+		const ok = row.createEl('button', { text: 'Gravar', cls: 'mod-cta' });
+		ok.disabled = true;
+		ok.onclick = () => this.settle(ordenarEscolhidas(marcadas));
+
+		// Ao atingir o limite (total ou da faceta), as caixas que estourariam ficam desabilitadas.
+		const atualizar = () => {
+			for (const { c, input } of caixas) input.disabled = !input.checked && !podeMarcar(this.tax, marcadas, c);
+			ok.disabled = marcadas.length === 0;
+		};
+
+		for (const c of this.opcoes) {
+			const label = createEl('label', { cls: 'jev-option jev-check' });
+			const input = label.createEl('input', { type: 'checkbox' });
+			label.createSpan({ cls: 'jev-option-name', text: `#${c.tag}${c.faceta === 'tema' ? '' : ` (${c.faceta})`}` });
+			label.createSpan({ cls: 'jev-option-p', text: c.p.toFixed(2) });
+			input.onchange = () => {
+				if (input.checked) marcadas.push(c);
+				else marcadas.splice(marcadas.indexOf(c), 1);
+				atualizar();
+			};
+			caixas.push({ c, input });
+			contentEl.insertBefore(label, row);
+		}
+		atualizar();
 	}
 }

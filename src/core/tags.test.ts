@@ -71,6 +71,12 @@ describe('aplicarTags', () => {
 		const uma = aplicarTags(['x'], 'conceito', ['conceito/artes']);
 		expect(aplicarTags(uma, 'conceito', ['conceito/artes'])).toEqual(uma);
 	});
+	it('não apaga tag de assunto igual ao prefixo (3-carreira → #carreira)', () => {
+		expect(aplicarTags(['carreira', 'carreira/velha'], 'carreira', ['carreira/emprego'], new Set(['carreira']))).toEqual([
+			'carreira',
+			'carreira/emprego',
+		]);
+	});
 });
 
 describe('parseExcecoes', () => {

@@ -27,3 +27,13 @@
 	color: var(--text-muted);
 	font-variant-numeric: tabular-nums;
 }
+
+.jev-check {
+	align-items: center;
+	gap: var(--size-4-2);
+	cursor: pointer;
+}
+
+.jev-check .jev-option-name {
+	flex: 1;
+}

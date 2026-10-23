@@ -17,15 +17,30 @@ export interface Taxonomia {
 	categorias: Categoria[];
 }
 
-export interface Question {
+export interface ChoiceQuestion {
 	type: 'choice';
 	instructions: string;
 	criteria: Record<string, string>;
 }
 
+export interface NoulQuestion {
+	type: 'noul';
+	instructions: string;
+	criteria: { true: string; false: string };
+}
+
+export type Question = ChoiceQuestion | NoulQuestion;
+
+export interface JevState {
+	titulo: string;
+	pasta?: string;
+	tags: string[];
+	corpo: string;
+}
+
 export interface JevRequest {
 	model: string;
-	state: { titulo: string; pasta?: string; tags: string[]; corpo: string };
+	state: JevState;
 	questions: Record<string, Question>;
 }
 
@@ -36,10 +51,32 @@ export interface ChoiceAnswer {
 	confidence: number;
 }
 
+export interface NoulAnswer {
+	type: 'noul';
+	noul: number;
+}
+
 export interface JevResponse {
 	model?: string;
-	answers: Record<string, ChoiceAnswer>;
+	answers: Record<string, ChoiceAnswer | NoulAnswer>;
 	usage?: { input_tokens: number; output_tokens: number };
+}
+
+// Tags de assunto (Alt+A): wordlist fechada em src/taxonomia-tags.json.
+export interface TagDef {
+	tag: string;
+	desc: string;
+}
+
+export interface TaxTags {
+	regras: { max_total: number; max_por_faceta: Record<string, number> };
+	facetas: { id: string; nome: string; descricao: string; grupos: { nome: string; tags: TagDef[] }[] }[];
+}
+
+export interface CandidatoTag {
+	tag: string;
+	faceta: string;
+	p: number;
 }
 
 export interface Par {

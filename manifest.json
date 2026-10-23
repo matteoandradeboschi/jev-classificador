@@ -3,7 +3,7 @@
 	"name": "Jev Classificador",
 	"version": "0.1.0",
 	"minAppVersion": "1.11.4",
-	"description": "Botão na nota que pede ao Jev (TypeSafe) o genero e a categoria (taxonomia própria em PT-BR) e grava no frontmatter.",
+	"description": "Botão na nota que pede ao Jev (TypeSafe) o genero e a categoria (taxonomia própria em PT-BR) e grava no frontmatter. Alt+A: 1–3 tags de assunto de uma wordlist fechada.",
 	"author": "Matteo",
 	"isDesktopOnly": false
 }

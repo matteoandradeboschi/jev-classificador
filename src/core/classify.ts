@@ -43,23 +43,36 @@ function validationMessage(r: RawResponse): string {
 
 /** Envia 1 requisição (com retries de spec) e devolve o resultado ou null ("nenhuma"). */
 export async function classify(
-	{ send, sleep }: ClassifyDeps,
+	deps: ClassifyDeps,
 	{ tax, note, model, maxChars }: ClassifyOptions,
 ): Promise<Resultado | null> {
+	const res = await sendWithRetry(deps, (chars) => buildRequest(tax, note, model, chars), maxChars);
+	return parseOuErro(() => parseResponse(tax, res));
+}
+
+/** Erro de interpretação da resposta vira JevError('resposta'). */
+export function parseOuErro<T>(parse: () => T): T {
+	try {
+		return parse();
+	} catch (e) {
+		throw new JevError('resposta', (e as Error).message);
+	}
+}
+
+/** Laço de envio comum aos comandos: 401, 429/529 com backoff, max_tokens → metade do corpo 1 vez, 422. */
+export async function sendWithRetry(
+	{ send, sleep }: ClassifyDeps,
+	build: (chars: number) => JevRequest,
+	maxChars: number,
+): Promise<JevResponse> {
 	let chars = maxChars;
 	let reduced = false;
 	let retries = 0;
 
 	for (;;) {
-		const raw = await send(buildRequest(tax, note, model, chars));
+		const raw = await send(build(chars));
 
-		if (raw.status === 200) {
-			try {
-				return parseResponse(tax, raw.json as JevResponse);
-			} catch (e) {
-				throw new JevError('resposta', (e as Error).message);
-			}
-		}
+		if (raw.status === 200) return raw.json as JevResponse;
 		if (raw.status === 401) throw new JevError('auth', 'chave inválida', 401);
 		if (raw.status === 429 || raw.status === 529) {
 			const delay = BACKOFF_MS[retries++];

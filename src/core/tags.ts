@@ -42,10 +42,19 @@ export function gerarTags(
 /** Tag única (sem pasta) das notas com a checkbox ai-generated. */
 export const AI = 'ai-generated';
 
-/** Troca "<prefixo>", "<prefixo>/*" e "ai-generated" (segue a checkbox) pelas novas; mantém as demais na ordem. */
-export function aplicarTags(atuais: unknown, prefixo: string, novas: string[]): string[] {
+/**
+ * Troca "<prefixo>", "<prefixo>/*" e "ai-generated" (segue a checkbox) pelas novas; mantém as demais na ordem.
+ * `protegidas` (wordlist do Alt+A) nunca saem: "3-carreira" → prefixo "carreira", que também é tag de assunto.
+ */
+export function aplicarTags(
+	atuais: unknown,
+	prefixo: string,
+	novas: string[],
+	protegidas: ReadonlySet<string> = new Set(),
+): string[] {
 	const resto = normalizeTags(atuais).filter((t) => {
 		const l = t.toLowerCase();
+		if (protegidas.has(l)) return true;
 		return l !== prefixo && l !== AI && !l.startsWith(prefixo + '/');
 	});
 	return [...resto, ...novas];

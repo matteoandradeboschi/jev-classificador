@@ -14,6 +14,8 @@ export interface JevSettings {
 	tagExcecoes: Record<string, string>;
 	/** Alt+T: pasta/genero ou pasta/categoria. */
 	tagCampo: CampoTag;
+	/** Alt+A: p mínimo do noul para gravar a tag de assunto sem perguntar. */
+	tagLimiar: number;
 }
 
 export const DEFAULT_SETTINGS: JevSettings = {
@@ -25,6 +27,7 @@ export const DEFAULT_SETTINGS: JevSettings = {
 	sendFolder: true,
 	tagExcecoes: { lugares: 'lugar' },
 	tagCampo: 'genero',
+	tagLimiar: 0.5,
 };
 
 export class JevSettingTab extends PluginSettingTab {
@@ -142,6 +145,27 @@ export class JevSettingTab extends PluginSettingTab {
 					.setValue(Object.entries(s.tagExcecoes).map(([k, v]) => `${k}=${v}`).join('\n'))
 					.onChange(async (v) => {
 						s.tagExcecoes = parseExcecoes(v);
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl).setName('Tags de assunto').setHeading();
+
+		new Setting(containerEl)
+			.setName('Atalho das tags de assunto')
+			.setDesc('Padrão: Alt+A. Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas.')
+			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+
+		new Setting(containerEl)
+			.setName('Limiar das tags')
+			.setDesc('Probabilidade mínima (0–1) para gravar a tag sem perguntar. Se nenhuma passar, abre a escolha entre as 6 melhores. Valor inicial é um chute; ajuste depois de usar em notas reais.')
+			.addSlider((sl) =>
+				sl
+					.setLimits(0, 1, 0.05)
+					.setValue(s.tagLimiar)
+					.setDynamicTooltip()
+					.onChange(async (v) => {
+						s.tagLimiar = v;
 						await this.plugin.saveSettings();
 					}),
 			);

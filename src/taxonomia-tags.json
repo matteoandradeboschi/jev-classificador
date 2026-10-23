@@ -1,0 +1,140 @@
+{
+  "versao": 1,
+  "criado_em": "2026-10-23",
+  "uso": "Wordlist fechada de tags genéricas para o comando 'Gerar tags de assunto' do Jev Classificador. O Jev só escolhe tags desta lista.",
+  "regras": {
+    "formato": "minúsculas, sem acento, kebab-case, sem '/' (tags planas)",
+    "max_total": 3,
+    "max_por_faceta": { "tema": 3, "forma": 1 },
+    "nao_usar": "tags de diretório (projeto/, conceito/, ferramenta/, referencia/...) e nomes próprios; pessoas, cursos e projetos específicos ficam em links, não em tags",
+    "adicionar_tag": "só quando aparecer em 3+ notas e não couber em nenhuma existente"
+  },
+  "facetas": [
+    {
+      "id": "tema",
+      "nome": "Tema",
+      "descricao": "Sobre o que a nota fala.",
+      "grupos": [
+        {
+          "nome": "tecnologia",
+          "tags": [
+            { "tag": "ia", "desc": "Inteligência artificial: LLMs, prompts, agentes, modelos como Claude, Gemini, Jev." },
+            { "tag": "programacao", "desc": "Escrever código, linguagens, desenvolvimento de software, plugins, scripts." },
+            { "tag": "automacao", "desc": "Automatizar tarefas e fluxos de trabalho para eliminar trabalho manual." },
+            { "tag": "ciberseguranca", "desc": "Segurança da informação, hacking, pentest, exploits, senhas, hashes, hardening." },
+            { "tag": "linux", "desc": "Linux, terminal, shell, comandos de sistema." },
+            { "tag": "redes", "desc": "Redes de computadores: protocolos, portas, servidores, SSH, FTP, internet." },
+            { "tag": "hardware", "desc": "Computadores e dispositivos físicos: notebook, peças, BIOS, periféricos." },
+            { "tag": "web", "desc": "Sites, navegadores, extensões, landing pages, gerações da web." },
+            { "tag": "mobile", "desc": "Celular e apps móveis: iOS, Android, atalhos, Siri." },
+            { "tag": "obsidian", "desc": "O app Obsidian: vault, plugins, temas, configuração." },
+            { "tag": "gestao-do-conhecimento", "desc": "Organizar notas e ideias: PKM, zettelkasten, segundo cérebro, métodos de anotação." },
+            { "tag": "dados-e-backup", "desc": "Armazenamento, backup, sincronização, NAS, nuvem, arquivos." },
+            { "tag": "privacidade", "desc": "Proteção de dados pessoais, rastreamento, anonimato online." }
+          ]
+        },
+        {
+          "nome": "mente-e-aprendizado",
+          "tags": [
+            { "tag": "aprendizado", "desc": "Como aprender e dominar habilidades, autodidatismo, ciclo de aprendizagem." },
+            { "tag": "tecnicas-de-estudo", "desc": "Métodos concretos de estudo: revisão, anotação, repetição, caderno." },
+            { "tag": "memoria", "desc": "Memorizar, lembrar, esquecer, repertório." },
+            { "tag": "leitura", "desc": "Ler livros e textos, hábito e técnica de leitura." },
+            { "tag": "escrita", "desc": "Escrever textos, redação, clareza, estilo." },
+            { "tag": "pensamento-critico", "desc": "Raciocínio, lógica, questionar premissas, método socrático, fazer boas perguntas." },
+            { "tag": "criatividade", "desc": "Gerar ideias originais, conectar coisas distintas, inventar." },
+            { "tag": "produtividade", "desc": "Foco, gestão de tempo, organização de tarefas, planejamento do dia." },
+            { "tag": "habitos", "desc": "Criar ou mudar hábitos, rotina, consistência." },
+            { "tag": "motivacao", "desc": "Disciplina, momentum, vontade de agir, melhoria contínua." },
+            { "tag": "tomada-de-decisao", "desc": "Escolher entre opções, avaliar riscos e consequências." },
+            { "tag": "psicologia", "desc": "Comportamento humano, mente, vieses, personalidade." },
+            { "tag": "neurociencia", "desc": "Cérebro, sistema nervoso, base biológica do pensamento." },
+            { "tag": "emocoes", "desc": "Sentimentos, instinto emocional, arrepios, reações emocionais." },
+            { "tag": "autoconhecimento", "desc": "Entender a si mesmo: camada interna, valores, como eu funciono." },
+            { "tag": "identidade", "desc": "Quem eu sou, autoimagem, máscara social, alter ego." },
+            { "tag": "saude-mental", "desc": "Bem-estar psicológico, ansiedade, estar bem consigo mesmo." }
+          ]
+        },
+        {
+          "nome": "pessoas-e-sociedade",
+          "tags": [
+            { "tag": "relacionamentos", "desc": "Relações com outras pessoas: amizade, família, dar e receber." },
+            { "tag": "comunicacao", "desc": "Falar e se expressar: oratória, debate, conversa, formular antes de falar." },
+            { "tag": "networking", "desc": "Construir contatos e conexões profissionais." },
+            { "tag": "lideranca", "desc": "Liderar, influenciar, conduzir pessoas ou grupos." },
+            { "tag": "sociedade", "desc": "Funcionamento da sociedade: hierarquia, elites, cultura, comportamento coletivo." },
+            { "tag": "etica", "desc": "Moral, certo e errado, virtudes e vícios." },
+            { "tag": "idiomas", "desc": "Aprender ou usar línguas: inglês, italiano, português." },
+            { "tag": "italia", "desc": "Viver na Itália: cidades, cultura local, serviços, costumes." },
+            { "tag": "burocracia", "desc": "Documentos, órgãos públicos, trâmites, formulários oficiais." },
+            { "tag": "saude", "desc": "Saúde física: corpo, sono, alimentação, exercício." }
+          ]
+        },
+        {
+          "nome": "trabalho-e-dinheiro",
+          "tags": [
+            { "tag": "carreira", "desc": "Trajetória profissional, crescimento, escolha de área." },
+            { "tag": "emprego", "desc": "Procurar trabalho: currículo, entrevistas, agências, vagas." },
+            { "tag": "cursos", "desc": "Cursos de formação, aulas, certificações, materiais de curso." },
+            { "tag": "negocios", "desc": "Modelos de negócio, clientes, vendas, CRM, nichos." },
+            { "tag": "empreendedorismo", "desc": "Criar startup ou produto próprio, validar ideias de negócio." },
+            { "tag": "marketing", "desc": "Divulgação, conversão, posicionamento, audiência." },
+            { "tag": "criacao-de-conteudo", "desc": "Publicar conteúdo: newsletter, Substack, posts, redes sociais." },
+            { "tag": "financas-pessoais", "desc": "Dinheiro pessoal: gastos, economizar, compras, orçamento." },
+            { "tag": "economia", "desc": "Funcionamento da economia: mercados, inflação, valor, juros." }
+          ]
+        },
+        {
+          "nome": "conhecimento",
+          "tags": [
+            { "tag": "filosofia", "desc": "Questões filosóficas, pensadores, sentido, existência." },
+            { "tag": "ciencia", "desc": "Ciência em geral e método científico." },
+            { "tag": "fisica", "desc": "Física: leis, energia, movimento." },
+            { "tag": "astronomia", "desc": "Espaço, planetas, estrelas, universo." },
+            { "tag": "matematica", "desc": "Matemática, números, probabilidade, lógica formal." },
+            { "tag": "historia", "desc": "Fatos e períodos históricos." },
+            { "tag": "investigacao", "desc": "Investigar e apurar fatos: pesquisa, OSINT, rastrear evidências e conexões." }
+          ]
+        },
+        {
+          "nome": "criatividade-e-lazer",
+          "tags": [
+            { "tag": "design", "desc": "Design visual, interfaces, cores, tipografia, layout." },
+            { "tag": "musica", "desc": "Música, ouvir, tocar, Spotify." },
+            { "tag": "video", "desc": "Criar e editar vídeos." },
+            { "tag": "cinema-e-series", "desc": "Filmes e séries: Matrix, Stranger Things, análises." },
+            { "tag": "jogos", "desc": "Videogames e jogos." },
+            { "tag": "esporte", "desc": "Prática esportiva e atividade física: skate, cavalgar, treino." },
+            { "tag": "skate", "desc": "Skate, manobras, skateparks." },
+            { "tag": "hobbies", "desc": "Passatempos: cubo mágico, mágica, veículos, colecionar." },
+            { "tag": "eventos", "desc": "Casamentos, festas, convites, celebrações." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forma",
+      "nome": "Forma",
+      "descricao": "Que tipo de nota é (independente do tema). No máximo 1.",
+      "grupos": [
+        {
+          "nome": "forma",
+          "tags": [
+            { "tag": "ideia", "desc": "Proposta de algo a criar ou fazer, ainda não executado." },
+            { "tag": "insight", "desc": "Percepção ou conexão nova e repentina sobre algo." },
+            { "tag": "reflexao", "desc": "Pensamento pessoal desenvolvido sobre um tema." },
+            { "tag": "pergunta", "desc": "Dúvida em aberto, nota centrada numa questão sem resposta." },
+            { "tag": "resumo", "desc": "Síntese de conteúdo externo: vídeo, livro, aula, post." },
+            { "tag": "tutorial", "desc": "Passo a passo ou comandos de como fazer algo." },
+            { "tag": "checklist", "desc": "Lista de itens a verificar ou cumprir." },
+            { "tag": "plano", "desc": "Planejamento, metas, roteiro, próximos passos." },
+            { "tag": "especificacao", "desc": "Requisitos e desenho de um software ou projeto." },
+            { "tag": "relato", "desc": "Experiência vivida contada pela própria pessoa." },
+            { "tag": "comparacao", "desc": "Compara opções, ferramentas ou ideias lado a lado." },
+            { "tag": "definicao", "desc": "Explica o que é um conceito ou termo." }
+          ]
+        }
+      ]
+    }
+  ]
+}

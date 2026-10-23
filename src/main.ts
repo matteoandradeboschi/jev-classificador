@@ -1,14 +1,25 @@
 import { MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
-import { classify, JevError, RawResponse } from './core/classify';
+import { classify, JevError, parseOuErro, RawResponse, sendWithRetry } from './core/classify';
 import { isClassified, isExcluded, precisaConfirmar } from './core/jev';
 import { ordenarBloco } from './core/frontmatter';
 import { aplicarTags, gerarTags } from './core/tags';
-import type { JevRequest, Par, Taxonomia } from './core/types';
+import {
+	aplicarTagsAssunto,
+	buildTagRequest,
+	escolherTags,
+	parseTagResponse,
+	tagsAssuntoAtuais,
+	wordlist,
+} from './core/tagsAssunto';
+import type { CandidatoTag, JevRequest, Par, Taxonomia, TaxTags } from './core/types';
 import taxJson from './taxonomia.json';
+import taxTagsJson from './taxonomia-tags.json';
 import { DEFAULT_SETTINGS, JevSettings, JevSettingTab } from './settings';
-import { ConfirmOverwriteModal, PickParModal } from './ui/modals';
+import { ConfirmModal, ConfirmOverwriteModal, PickParModal, PickTagsModal } from './ui/modals';
 
 const tax = taxJson as unknown as Taxonomia;
+const taxTags = taxTagsJson as unknown as TaxTags;
+const WORDLIST = wordlist(taxTags);
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const TOOLTIP = 'Classificar gênero e categoria (Jev)';
 
@@ -42,6 +53,18 @@ export default class JevClassificador extends Plugin {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
 				if (!checking) void this.gerarTags(file);
+				return true;
+			},
+		});
+
+		this.addCommand({
+			id: 'gerar-tags-assunto',
+			name: 'Gerar tags de assunto',
+			hotkeys: [{ modifiers: ['Alt'], key: 'A' }],
+			checkCallback: (checking) => {
+				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
+				if (!file) return false;
+				if (!checking) void this.gerarTagsAssunto(file);
 				return true;
 			},
 		});
@@ -183,10 +206,74 @@ export default class JevClassificador extends Plugin {
 			);
 
 		await this.app.fileManager.processFrontMatter(file, (f: Record<string, unknown>) => {
-			f.tags = aplicarTags(f.tags, r.prefixo, r.tags);
+			f.tags = aplicarTags(f.tags, r.prefixo, r.tags, WORDLIST);
 			ordenarBloco(f);
 		});
 		new Notice(`Tags: ${r.tags.map((t) => '#' + t).join(' ')}`);
+	}
+
+	/** Alt+A: 1–3 tags planas da wordlist (taxonomia-tags.json), via Jev. Troca só as tags da wordlist. */
+	async gerarTagsAssunto(file: TFile) {
+		if (this.busy) return;
+		if (file.extension !== 'md') return void new Notice('Tags: só funciona em notas .md');
+		// Antes de ler o arquivo: pasta privada nunca é lida nem enviada.
+		if (isExcluded(file.path, this.settings.excludedFolders))
+			return void new Notice('Tags: pasta privada, não enviado');
+
+		const key = this.app.secretStorage.getSecret(this.settings.apiKeySecret);
+		if (!key) {
+			new Notice('Jev: configure a chave TypeSafe');
+			return this.openSettings();
+		}
+
+		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter ?? null;
+		const atuais = tagsAssuntoAtuais(fm?.tags, WORDLIST);
+		if (atuais.length) {
+			const ok = await new ConfirmModal(
+				this.app,
+				'Substituir tags de assunto?',
+				`A nota já tem ${atuais.map((t) => '#' + t).join(' ')}. As outras tags não mudam.`,
+				'Substituir',
+			).ask();
+			if (!ok) return;
+		}
+
+		this.setBusy(true);
+		new Notice('Jev: gerando tags…');
+		try {
+			const content = await this.app.vault.cachedRead(file);
+			const note = {
+				basename: file.basename,
+				frontmatter: fm,
+				content,
+				folder: this.settings.sendFolder ? (file.parent?.path ?? '') : undefined,
+			};
+			const res = await sendWithRetry(
+				{ send: (r) => this.send(r, key), sleep: (ms) => new Promise((r) => window.setTimeout(r, ms)) },
+				(chars) => buildTagRequest(taxTags, note, this.settings.model, chars),
+				this.settings.maxBodyChars,
+			);
+			const r = escolherTags(taxTags, parseOuErro(() => parseTagResponse(taxTags, res)), this.settings.tagLimiar);
+
+			let escolhidas: CandidatoTag[] | null = r.escolhidas;
+			if (!escolhidas.length) {
+				escolhidas = await new PickTagsModal(this.app, taxTags, r.candidatos, this.settings.tagLimiar).ask();
+				if (!escolhidas?.length) return;
+			}
+
+			const novas = escolhidas.map((c) => c.tag);
+			await this.app.fileManager.processFrontMatter(file, (f: Record<string, unknown>) => {
+				f.tags = aplicarTagsAssunto(f.tags, novas, WORDLIST);
+				ordenarBloco(f);
+			});
+			new Notice(
+				`Tags: ${novas.map((t) => '#' + t).join(' ')} (${escolhidas.map((c) => c.p.toFixed(2)).join(' / ')})`,
+			);
+		} catch (e) {
+			this.reportError(e);
+		} finally {
+			this.setBusy(false);
+		}
 	}
 
 	private reportError(e: unknown) {
