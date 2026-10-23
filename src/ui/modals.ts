@@ -1,4 +1,4 @@
-import { App, Modal } from 'obsidian';
+import { App, Modal, SecretComponent } from 'obsidian';
 import { ordenarEscolhidas, podeMarcar } from '../core/tagsAssunto';
 import type { CandidatoTag, Par, Resultado, TaxTags } from '../core/types';
 
@@ -23,6 +23,34 @@ abstract class AwaitableModal<T> extends Modal {
 	onClose() {
 		this.contentEl.empty();
 		if (!this.settled) this.resolve(this.fallback);
+	}
+}
+
+/** Pede o segredo da chave TypeSafe (fica no SecretStorage do Obsidian). Resolve com o nome escolhido. */
+export class KeyModal extends AwaitableModal<string | null> {
+	protected fallback = null;
+
+	constructor(
+		app: App,
+		private nome: string,
+	) {
+		super(app);
+	}
+
+	onOpen() {
+		const { contentEl } = this;
+		this.setTitle('Chave TypeSafe');
+		const p = contentEl.createEl('p', { text: 'O Jev precisa de uma chave da TypeSafe. Crie em ' });
+		p.createEl('a', { text: 'console.typesafe.ai/keys', href: 'https://console.typesafe.ai/keys' });
+		p.appendText(' e escolha ou crie o segredo abaixo.');
+		contentEl.createEl('p', {
+			cls: 'jev-muted',
+			text: 'A chave fica no armazenamento de segredos do Obsidian, não nos arquivos do vault.',
+		});
+		new SecretComponent(this.app, contentEl.createDiv()).setValue(this.nome).onChange((n) => (this.nome = n));
+		const row = contentEl.createDiv({ cls: 'jev-buttons' });
+		row.createEl('button', { text: 'Cancelar' }).onclick = () => this.settle(null);
+		row.createEl('button', { text: 'Pronto', cls: 'mod-cta' }).onclick = () => this.settle(this.nome);
 	}
 }
 

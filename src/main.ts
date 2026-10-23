@@ -15,7 +15,7 @@ import type { CandidatoTag, JevRequest, Par, Taxonomia, TaxTags } from './core/t
 import taxJson from './taxonomia.json';
 import taxTagsJson from './taxonomia-tags.json';
 import { DEFAULT_SETTINGS, JevSettings, JevSettingTab } from './settings';
-import { ConfirmModal, ConfirmOverwriteModal, PickParModal, PickTagsModal } from './ui/modals';
+import { ConfirmModal, ConfirmOverwriteModal, KeyModal, PickParModal, PickTagsModal } from './ui/modals';
 
 const tax = taxJson as unknown as Taxonomia;
 const taxTags = taxTagsJson as unknown as TaxTags;
@@ -36,7 +36,6 @@ export default class JevClassificador extends Plugin {
 		this.addCommand({
 			id: 'classificar',
 			name: 'Classificar gênero e categoria',
-			hotkeys: [{ modifiers: ['Alt'], key: 'C' }],
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -48,7 +47,6 @@ export default class JevClassificador extends Plugin {
 		this.addCommand({
 			id: 'gerar-tags',
 			name: 'Gerar tags (pasta/categoria)',
-			hotkeys: [{ modifiers: ['Alt'], key: 'T' }],
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -60,7 +58,6 @@ export default class JevClassificador extends Plugin {
 		this.addCommand({
 			id: 'gerar-tags-assunto',
 			name: 'Gerar tags de assunto',
-			hotkeys: [{ modifiers: ['Alt'], key: 'A' }],
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -72,7 +69,18 @@ export default class JevClassificador extends Plugin {
 		const attach = () => this.attachButtons();
 		this.registerEvent(this.app.workspace.on('layout-change', attach));
 		this.registerEvent(this.app.workspace.on('active-leaf-change', attach));
-		this.app.workspace.onLayoutReady(attach);
+		this.app.workspace.onLayoutReady(() => {
+			attach();
+			void this.onboarding();
+		});
+	}
+
+	/** 1ª ativação sem chave: pede a chave uma vez, sem esperar o primeiro uso. */
+	private async onboarding() {
+		if (this.settings.onboarded) return;
+		this.settings.onboarded = true;
+		await this.saveSettings();
+		if (!this.app.secretStorage.getSecret(this.settings.apiKeySecret)) await this.pedirChave();
 	}
 
 	onunload() {
@@ -100,12 +108,20 @@ export default class JevClassificador extends Plugin {
 		}
 	}
 
-	private openSettings() {
-		const setting = (this.app as unknown as {
-			setting?: { open(): void; openTabById(id: string): void };
-		}).setting;
-		setting?.open();
-		setting?.openTabById(this.manifest.id);
+	/** Abre o KeyModal; devolve a chave se o usuário configurou uma. */
+	private async pedirChave(): Promise<string | null> {
+		const nome = await new KeyModal(this.app, this.settings.apiKeySecret).ask();
+		if (!nome) return null;
+		this.settings.apiKeySecret = nome;
+		await this.saveSettings();
+		return this.app.secretStorage.getSecret(nome);
+	}
+
+	private async chave(): Promise<string | null> {
+		const key = this.app.secretStorage.getSecret(this.settings.apiKeySecret);
+		if (key) return key;
+		new Notice('Jev: configure a chave TypeSafe');
+		return this.pedirChave();
 	}
 
 	private async send(req: JevRequest, key: string): Promise<RawResponse> {
@@ -132,11 +148,8 @@ export default class JevClassificador extends Plugin {
 		if (isExcluded(file.path, this.settings.excludedFolders))
 			return void new Notice('Jev: pasta privada, não enviado');
 
-		const key = this.app.secretStorage.getSecret(this.settings.apiKeySecret);
-		if (!key) {
-			new Notice('Jev: configure a chave TypeSafe');
-			return this.openSettings();
-		}
+		const key = await this.chave();
+		if (!key) return;
 
 		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter ?? null;
 		if (isClassified(fm)) {
@@ -220,11 +233,8 @@ export default class JevClassificador extends Plugin {
 		if (isExcluded(file.path, this.settings.excludedFolders))
 			return void new Notice('Tags: pasta privada, não enviado');
 
-		const key = this.app.secretStorage.getSecret(this.settings.apiKeySecret);
-		if (!key) {
-			new Notice('Jev: configure a chave TypeSafe');
-			return this.openSettings();
-		}
+		const key = await this.chave();
+		if (!key) return;
 
 		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter ?? null;
 		const atuais = tagsAssuntoAtuais(fm?.tags, WORDLIST);
@@ -281,7 +291,7 @@ export default class JevClassificador extends Plugin {
 			switch (e.kind) {
 				case 'auth':
 					new Notice('Jev: chave TypeSafe inválida — veja as configurações');
-					return this.openSettings();
+					return void this.pedirChave();
 				case 'rate':
 					return void new Notice(`Jev: serviço ocupado (HTTP ${e.status}), tente de novo depois`);
 				case 'tokens':

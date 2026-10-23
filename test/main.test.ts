@@ -33,6 +33,7 @@ async function setup({ key = null, fm }: Opts = {}) {
 	};
 	const plugin = new JevClassificador(app as never);
 	await plugin.loadSettings();
+	plugin.settings.excludedFolders = ['1-diario', '4-pessoas'];
 	return { plugin, reads, written };
 }
 

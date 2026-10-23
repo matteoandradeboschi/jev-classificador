@@ -16,18 +16,21 @@ export interface JevSettings {
 	tagCampo: CampoTag;
 	/** Alt+A: p mínimo do noul para gravar a tag de assunto sem perguntar. */
 	tagLimiar: number;
+	/** Já pediu a chave na 1ª ativação. */
+	onboarded: boolean;
 }
 
 export const DEFAULT_SETTINGS: JevSettings = {
 	apiKeySecret: 'typesafe-api-key',
 	model: 'jev-latest',
 	threshold: 0.6,
-	excludedFolders: ['1-diario', '4-pessoas'],
+	excludedFolders: [],
 	maxBodyChars: 12000,
 	sendFolder: true,
 	tagExcecoes: { lugares: 'lugar' },
 	tagCampo: 'genero',
 	tagLimiar: 0.5,
+	onboarded: false,
 };
 
 export class JevSettingTab extends PluginSettingTab {
@@ -114,15 +117,13 @@ export class JevSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Atalho de teclado')
-			.setDesc('Padrão: Alt+C. Classifica a nota aberta. Clique para trocar na tela de Atalhos do Obsidian.')
-			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+			.setDesc('Classifica a nota aberta (também pelo botão no topo da nota). Sem atalho padrão: defina em Configurações → Atalhos, buscando "Jev".');
 
 		new Setting(containerEl).setName('Tags').setHeading();
 
 		new Setting(containerEl)
 			.setName('Atalho das tags')
-			.setDesc('Padrão: Alt+T. Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API.')
-			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+			.setDesc('Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API. Sem atalho padrão: defina em Configurações → Atalhos.');
 
 		new Setting(containerEl)
 			.setName('Tag usa')
@@ -153,8 +154,7 @@ export class JevSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Atalho das tags de assunto')
-			.setDesc('Padrão: Alt+A. Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas.')
-			.addButton((b) => b.setButtonText('Alterar atalho').onClick(() => this.abrirAtalhos()));
+			.setDesc('Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas. Sem atalho padrão: defina em Configurações → Atalhos.');
 
 		new Setting(containerEl)
 			.setName('Limiar das tags')
@@ -169,12 +169,5 @@ export class JevSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}),
 			);
-	}
-
-	private abrirAtalhos() {
-		const setting = (this.app as unknown as {
-			setting?: { openTabById(id: string): { setQuery?(q: string): void } | undefined };
-		}).setting;
-		setting?.openTabById('hotkeys')?.setQuery?.(this.plugin.manifest.name);
 	}
 }
