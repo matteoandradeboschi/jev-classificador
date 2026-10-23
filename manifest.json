@@ -3,7 +3,8 @@
 	"name": "Jev Classificador",
 	"version": "0.1.0",
 	"minAppVersion": "1.11.4",
-	"description": "Botão na nota que pede ao Jev (TypeSafe) o genero e a categoria (taxonomia própria em PT-BR) e grava no frontmatter. Alt+A: 1–3 tags de assunto de uma wordlist fechada.",
-	"author": "Matteo",
-	"isDesktopOnly": false
+	"description": "Classifica a nota com o Jev (TypeSafe): grava genero e categoria (taxonomia em PT-BR) e gera tags de pasta e de assunto no frontmatter.",
+	"author": "Matteo Andrade Boschi",
+	"isDesktopOnly": false,
+	"authorUrl": "https://github.com/matteoandradeboschi"
 }
