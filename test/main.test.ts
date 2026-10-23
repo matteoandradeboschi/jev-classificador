@@ -3,6 +3,7 @@ import JevClassificador from '../src/main';
 import { listarTags, tagQuestionId } from '../src/core/tagsAssunto';
 import type { TaxTags } from '../src/core/types';
 import taxTags from '../src/taxonomia-tags.json';
+import { setLang } from '../src/i18n';
 import { notices, requests, state, TFile } from './obsidian-stub';
 
 interface Opts {
@@ -204,5 +205,37 @@ describe('fluxo gerarTagsAssunto() (Alt+A)', () => {
 		};
 		await plugin.gerarTags(new TFile('3-carreira/GOL 994.md'));
 		expect(fm.tags).toEqual(['carreira', 'carreira/emprego']);
+	});
+});
+
+describe('idioma EN', () => {
+	it('run(): request com taxonomia EN, grava rótulos EN e avisa em EN', async () => {
+		const probs = (k: string) => ({ type: 'choice', choice: k, probabilities: { [k]: 0.95 }, confidence: 0.95 });
+		state.response = {
+			status: 200,
+			text: '',
+			json: { answers: { categoria: probs('technology'), genero_tecnologia: probs('programming') } },
+		};
+		const { plugin, written } = await setup({ key: 'k' });
+		plugin.settings.lang = 'en';
+		setLang('en');
+		await plugin.run(new TFile('2-estudos/Pentest.md'));
+		const body = JSON.parse(requests[0]!.body);
+		expect(body.questions.categoria.criteria).toHaveProperty('none');
+		expect(written).toEqual([{ genero: 'programming', categoria: 'technology' }]);
+		expect(notices).toEqual(['Jev: classifying…', 'Jev: technology · programming (conf. 0.95 / 0.95)']);
+	});
+
+	it('pasta privada: aviso em EN', async () => {
+		const { plugin } = await setup({ key: 'k' });
+		plugin.settings.lang = 'en';
+		setLang('en');
+		await plugin.run(new TFile('1-diario/x.md'));
+		expect(notices).toEqual(['Jev: private folder, nothing sent']);
+	});
+
+	it('sem lang salvo: segue o idioma do Obsidian (stub pt-BR → pt)', async () => {
+		const { plugin } = await setup();
+		expect(plugin.settings.lang).toBe('pt');
 	});
 });

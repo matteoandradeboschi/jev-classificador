@@ -1,5 +1,6 @@
 // Alt+A: tags planas de assunto escolhidas pelo Jev numa wordlist fechada (1 pergunta noul por tag).
 import { buildState, camposState, NoteInput, normalizeTags } from './jev';
+import { Lang, PROMPTS } from './prompts';
 import { CandidatoTag, JevRequest, JevResponse, NoulQuestion, TagDef, TaxTags } from './types';
 
 const CANDIDATOS = 6;
@@ -17,7 +18,8 @@ export const wordlist = (tax: TaxTags): Set<string> => new Set(listarTags(tax).m
 /** "tema" + "gestao-do-conhecimento" → "tag_gestao_do_conhecimento"; forma → "forma_tutorial". */
 export const tagQuestionId = (t: TagDaTax) => `${t.faceta === 'tema' ? 'tag' : t.faceta}_${t.tag.replace(/-/g, '_')}`;
 
-export function buildTagQuestions(tax: TaxTags, comPasta = false): Record<string, NoulQuestion> {
+export function buildTagQuestions(tax: TaxTags, comPasta = false, lang: Lang = 'pt'): Record<string, NoulQuestion> {
+	const p = PROMPTS[lang];
 	const campos = camposState(comPasta);
 	const questions: Record<string, NoulQuestion> = {};
 	// Ids de pergunta não chegam ao modelo: o texto repete a tag e a descrição.
@@ -26,32 +28,32 @@ export function buildTagQuestions(tax: TaxTags, comPasta = false): Record<string
 			t.faceta === 'tema'
 				? {
 						type: 'noul',
-						instructions: `Tema "${t.tag}": ${t.desc} Esse é um assunto central da nota (${campos})?`,
-						criteria: {
-							true: 'O tema é assunto central ou recorrente da nota.',
-							false: 'O tema não aparece, ou só é mencionado de passagem.',
-						},
+						instructions: p.tema(t.tag, t.desc, campos),
+						criteria: { true: p.temaSim, false: p.temaNao },
 					}
 				: {
 						type: 'noul',
-						instructions: `Forma "${t.tag}": ${t.desc} A nota (${campos}) é principalmente deste tipo?`,
-						criteria: {
-							true: 'A nota é principalmente deste tipo.',
-							false: 'A nota não é deste tipo, ou só tem um trecho dele.',
-						},
+						instructions: p.forma(t.tag, t.desc, campos),
+						criteria: { true: p.formaSim, false: p.formaNao },
 					};
 	}
 	return questions;
 }
 
-/** Igual ao state do Alt+C, mas sem as tags da wordlist (o resultado anterior não enviesa o novo). */
-export function buildTagRequest(tax: TaxTags, note: NoteInput, model: string, maxChars: number): JevRequest {
-	const wl = wordlist(tax);
+/** Igual ao state do Alt+C, mas sem as tags da wordlist `wl` (o resultado anterior não enviesa o novo). */
+export function buildTagRequest(
+	tax: TaxTags,
+	note: NoteInput,
+	model: string,
+	maxChars: number,
+	lang: Lang = 'pt',
+	wl: ReadonlySet<string> = wordlist(tax),
+): JevRequest {
 	const state = buildState(note, maxChars);
 	return {
 		model,
 		state: { ...state, tags: state.tags.filter((t) => !wl.has(t.toLowerCase())) },
-		questions: buildTagQuestions(tax, note.folder !== undefined),
+		questions: buildTagQuestions(tax, note.folder !== undefined, lang),
 	};
 }
 

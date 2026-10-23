@@ -15,8 +15,8 @@ import {
 import { ChoiceAnswer, JevRequest, JevResponse, Taxonomia } from './types';
 
 const tax = taxJson as unknown as Taxonomia;
-const cs = tax.categorias.find((c) => c.pt === 'tecnologia')!;
-const hum = tax.categorias.find((c) => c.pt === 'pensamento')!;
+const cs = tax.categorias.find((c) => c.nome === 'tecnologia')!;
+const hum = tax.categorias.find((c) => c.nome === 'pensamento')!;
 
 function ans(probs: Record<string, number>, confidence: number): ChoiceAnswer {
 	const choice = Object.entries(probs).sort((a, b) => b[1] - a[1])[0]![0];
@@ -26,7 +26,7 @@ function ans(probs: Record<string, number>, confidence: number): ChoiceAnswer {
 function fakeResponse(over: Record<string, ChoiceAnswer> = {}): JevResponse {
 	return {
 		answers: {
-			categoria: ans({ [cs.pt]: 0.8, [hum.pt]: 0.15, nenhuma: 0.05 }, 0.9),
+			categoria: ans({ [cs.nome]: 0.8, [hum.nome]: 0.15, nenhuma: 0.05 }, 0.9),
 			[`genero_${cs.id}`]: ans({ 'infraestrutura': 0.7, 'programação': 0.3 }, 0.8),
 			[`genero_${hum.id}`]: ans({ filosofia: 0.9, 'religião': 0.1 }, 0.9),
 			...over,
@@ -46,11 +46,11 @@ describe('buildQuestions', () => {
 	it('categoria inclui "nenhuma" e usa pt→desc', () => {
 		expect(Object.keys(q.categoria!.criteria)).toHaveLength(14);
 		expect(q.categoria!.criteria['nenhuma']).toBeTruthy();
-		expect(q.categoria!.criteria[cs.pt]).toBe(cs.desc);
+		expect(q.categoria!.criteria[cs.nome]).toBe(cs.desc);
 	});
 	it('pergunta de gênero é autossuficiente e nomeia a categoria', () => {
 		const g = q[`genero_${cs.id}`]!;
-		expect(g.instructions).toContain(`"${cs.pt}"`);
+		expect(g.instructions).toContain(`"${cs.nome}"`);
 		expect(Object.keys(g.criteria)).toHaveLength(cs.generos.length);
 	});
 	it('89 gêneros no total e ≤255 critérios por pergunta', () => {
@@ -126,7 +126,7 @@ describe('parseResponse', () => {
 	it('pega vencedor e ignora gêneros de outras categorias', () => {
 		const r = parseResponse(tax, fakeResponse())!;
 		expect(r.melhor).toMatchObject({
-			categoria: cs.pt,
+			categoria: cs.nome,
 			genero: 'infraestrutura',
 			confCategoria: 0.9,
 			confGenero: 0.8,
@@ -135,13 +135,13 @@ describe('parseResponse', () => {
 	it('top3 ordenado por p(cat)×p(gen|cat), com pares de categorias diferentes', () => {
 		const r = parseResponse(tax, fakeResponse())!;
 		expect(r.top3.map((p) => [p.categoria, p.genero])).toEqual([
-			[cs.pt, 'infraestrutura'], // .56
-			[cs.pt, 'programação'], // .24
-			[hum.pt, 'filosofia'], // .135
+			[cs.nome, 'infraestrutura'], // .56
+			[cs.nome, 'programação'], // .24
+			[hum.nome, 'filosofia'], // .135
 		]);
 	});
 	it('"nenhuma" → null', () => {
-		const r = parseResponse(tax, fakeResponse({ categoria: ans({ nenhuma: 0.9, [cs.pt]: 0.1 }, 0.9) }));
+		const r = parseResponse(tax, fakeResponse({ categoria: ans({ nenhuma: 0.9, [cs.nome]: 0.1 }, 0.9) }));
 		expect(r).toBeNull();
 	});
 	it('resposta fora da taxonomia lança', () => {
@@ -156,7 +156,7 @@ describe('parseResponse', () => {
 		expect(precisaConfirmar(r, 0.5)).toBe(false);
 		expect(precisaConfirmar(r, 0.56)).toBe(false); // igual ao limiar passa
 		expect(precisaConfirmar(r, 0.6)).toBe(true); // confidences .9/.8 ignoradas
-		const baixa = parseResponse(tax, fakeResponse({ categoria: ans({ [cs.pt]: 0.4, [hum.pt]: 0.35, nenhuma: 0.25 }, 0.3) }))!;
+		const baixa = parseResponse(tax, fakeResponse({ categoria: ans({ [cs.nome]: 0.4, [hum.nome]: 0.35, nenhuma: 0.25 }, 0.3) }))!;
 		expect(precisaConfirmar(baixa, 0.6)).toBe(true);
 	});
 });

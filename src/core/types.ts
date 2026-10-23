@@ -1,14 +1,14 @@
 export interface Genero {
 	id: string;
-	en: string;
-	pt: string;
+	/** Rótulo no idioma da taxonomia: enviado ao Jev e gravado no frontmatter. */
+	nome: string;
 	desc: string;
 }
 
 export interface Categoria {
 	id: string;
-	en: string;
-	pt: string;
+	/** Rótulo no idioma da taxonomia: enviado ao Jev e gravado no frontmatter. */
+	nome: string;
 	desc: string;
 	generos: Genero[];
 }
@@ -92,5 +92,3 @@ export interface Resultado {
 	/** Top 3 por p(categoria) × p(gênero | categoria). */
 	top3: Par[];
 }
-
-export const NENHUMA = 'nenhuma';

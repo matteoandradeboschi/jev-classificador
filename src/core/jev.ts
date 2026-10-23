@@ -5,39 +5,38 @@ import {
 	JevRequest,
 	JevResponse,
 	JevState,
-	NENHUMA,
 	Par,
 	Resultado,
 	Taxonomia,
 } from './types';
+import { Lang, PROMPTS } from './prompts';
 
 export const generoQuestionId = (c: Categoria) => `genero_${c.id}`;
 
 export const camposState = (comPasta: boolean) =>
 	comPasta ? '`titulo`, `pasta`, `tags`, `corpo`' : '`titulo`, `tags`, `corpo`';
 
-export function buildQuestions(tax: Taxonomia, comPasta = false): Record<string, ChoiceQuestion> {
+export function buildQuestions(tax: Taxonomia, comPasta = false, lang: Lang = 'pt'): Record<string, ChoiceQuestion> {
+	const t = PROMPTS[lang];
 	const questions: Record<string, ChoiceQuestion> = {};
 	const campos = camposState(comPasta);
 
 	const criteria: Record<string, string> = {};
-	for (const c of tax.categorias) criteria[c.pt] = c.desc;
-	criteria[NENHUMA] =
-		'A nota não trata de nenhuma área do conhecimento desta lista (ex.: lista de compras, nota vazia sem título informativo).';
+	for (const c of tax.categorias) criteria[c.nome] = c.desc;
+	criteria[t.nenhuma] = t.nenhumaDesc;
 	questions.categoria = {
 		type: 'choice',
-		instructions:
-			`Qual área ampla do conhecimento melhor descreve o assunto da nota (${campos})?`,
+		instructions: t.categoria(campos),
 		criteria,
 	};
 
 	// Ids de pergunta não chegam ao modelo: o texto precisa ser autossuficiente.
 	for (const c of tax.categorias) {
 		const sub: Record<string, string> = {};
-		for (const g of c.generos) sub[g.pt] = g.desc;
+		for (const g of c.generos) sub[g.nome] = g.desc;
 		questions[generoQuestionId(c)] = {
 			type: 'choice',
-			instructions: `Supondo que a nota pertença à área "${c.pt}", qual subárea melhor descreve o assunto da nota (${campos})?`,
+			instructions: t.genero(c.nome, campos),
 			criteria: sub,
 		};
 	}
@@ -84,11 +83,12 @@ export function buildRequest(
 	note: NoteInput,
 	model: string,
 	maxChars: number,
+	lang: Lang = 'pt',
 ): JevRequest {
 	return {
 		model,
 		state: buildState(note, maxChars),
-		questions: buildQuestions(tax, note.folder !== undefined),
+		questions: buildQuestions(tax, note.folder !== undefined, lang),
 	};
 }
 
@@ -135,35 +135,35 @@ function answer(res: JevResponse, id: string): ChoiceAnswer {
 const prob = (a: ChoiceAnswer, key: string) => a.probabilities[key] ?? 0;
 
 /** null = Jev disse "nenhuma". Lança se a resposta fugir da taxonomia. */
-export function parseResponse(tax: Taxonomia, res: JevResponse): Resultado | null {
+export function parseResponse(tax: Taxonomia, res: JevResponse, lang: Lang = 'pt'): Resultado | null {
 	const cat = answer(res, 'categoria');
-	if (cat.choice === NENHUMA) return null;
-	const winner = tax.categorias.find((c) => c.pt === cat.choice);
+	if (cat.choice === PROMPTS[lang].nenhuma) return null;
+	const winner = tax.categorias.find((c) => c.nome === cat.choice);
 	if (!winner) throw new Error(`categoria desconhecida: ${cat.choice}`);
 
 	const gen = answer(res, generoQuestionId(winner));
-	if (!winner.generos.some((g) => g.pt === gen.choice))
-		throw new Error(`gênero desconhecido em ${winner.pt}: ${gen.choice}`);
+	if (!winner.generos.some((g) => g.nome === gen.choice))
+		throw new Error(`gênero desconhecido em ${winner.nome}: ${gen.choice}`);
 
 	const pares: Par[] = [];
 	for (const c of tax.categorias) {
-		const pCat = prob(cat, c.pt);
+		const pCat = prob(cat, c.nome);
 		if (pCat <= 0) continue;
 		const g = res.answers?.[generoQuestionId(c)];
 		if (g?.type !== 'choice' || !g.probabilities) continue;
 		for (const sub of c.generos) {
-			const pGen = prob(g, sub.pt);
+			const pGen = prob(g, sub.nome);
 			if (pGen > 0)
-				pares.push({ categoria: c.pt, genero: sub.pt, pCategoria: pCat, pGenero: pGen });
+				pares.push({ categoria: c.nome, genero: sub.nome, pCategoria: pCat, pGenero: pGen });
 		}
 	}
 	pares.sort((a, b) => b.pCategoria * b.pGenero - a.pCategoria * a.pGenero);
 
 	return {
 		melhor: {
-			categoria: winner.pt,
+			categoria: winner.nome,
 			genero: gen.choice,
-			pCategoria: prob(cat, winner.pt),
+			pCategoria: prob(cat, winner.nome),
 			pGenero: prob(gen, gen.choice),
 			confCategoria: cat.confidence,
 			confGenero: gen.confidence,

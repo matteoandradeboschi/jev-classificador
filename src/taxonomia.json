@@ -4,536 +4,536 @@
 	"categorias": [
 		{
 			"id": "tecnologia",
-			"pt": "tecnologia",
+			"nome": "tecnologia",
 			"desc": "computação aplicada: construir, usar ou proteger software, hardware, redes e IA (não a ciência básica por trás)",
 			"generos": [
 				{
 					"id": "tecnologia_programacao",
-					"pt": "programação",
+					"nome": "programação",
 					"desc": "linguagens, código, engenharia de software, arquitetura, frameworks, git, desenvolvimento web e mobile"
 				},
 				{
 					"id": "tecnologia_inteligencia_artificial",
-					"pt": "inteligência artificial",
+					"nome": "inteligência artificial",
 					"desc": "IA, machine learning, LLMs, prompts, agentes, modelos de linguagem e suas aplicações"
 				},
 				{
 					"id": "tecnologia_ciberseguranca",
-					"pt": "cibersegurança",
+					"nome": "cibersegurança",
 					"desc": "segurança da informação, pentest, hacking, privacidade, criptografia aplicada, hardening, CTF"
 				},
 				{
 					"id": "tecnologia_dados",
-					"pt": "dados",
+					"nome": "dados",
 					"desc": "bancos de dados, análise de dados, SQL, planilhas, visualização, ciência de dados"
 				},
 				{
 					"id": "tecnologia_infraestrutura",
-					"pt": "infraestrutura",
+					"nome": "infraestrutura",
 					"desc": "sistemas operacionais, Linux, redes, servidores, cloud, DevOps, configuração de sistemas"
 				},
 				{
 					"id": "tecnologia_hardware",
-					"pt": "hardware",
+					"nome": "hardware",
 					"desc": "computadores, componentes, periféricos, eletrônica, dispositivos, BIOS, manutenção física"
 				},
 				{
 					"id": "tecnologia_automacao",
-					"pt": "automação",
+					"nome": "automação",
 					"desc": "scripts, workflows, integrações, no-code, ferramentas e apps para automatizar tarefas"
 				},
 				{
 					"id": "tecnologia_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de tecnologia como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "ciencia",
-			"pt": "ciência",
+			"nome": "ciência",
 			"desc": "ciências naturais e exatas: conhecimento básico sobre o mundo físico e vivo, não suas aplicações tecnológicas",
 			"generos": [
 				{
 					"id": "ciencia_matematica",
-					"pt": "matemática",
+					"nome": "matemática",
 					"desc": "matemática pura e aplicada, álgebra, cálculo, geometria, estatística, probabilidade"
 				},
 				{
 					"id": "ciencia_fisica",
-					"pt": "física",
+					"nome": "física",
 					"desc": "mecânica clássica, termodinâmica, eletromagnetismo, física quântica, relatividade"
 				},
 				{
 					"id": "ciencia_quimica",
-					"pt": "química",
+					"nome": "química",
 					"desc": "química geral, orgânica, inorgânica, reações, materiais"
 				},
 				{
 					"id": "ciencia_biologia",
-					"pt": "biologia",
+					"nome": "biologia",
 					"desc": "células, genética, evolução, zoologia, botânica, microbiologia"
 				},
 				{
 					"id": "ciencia_ecologia",
-					"pt": "ecologia",
+					"nome": "ecologia",
 					"desc": "ecossistemas, meio ambiente, clima, mudanças climáticas, ciências da terra, geologia"
 				},
 				{
 					"id": "ciencia_astronomia",
-					"pt": "astronomia",
+					"nome": "astronomia",
 					"desc": "espaço, planetas, estrelas, cosmologia, astrofísica"
 				},
 				{
 					"id": "ciencia_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de ciência como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "saude",
-			"pt": "saúde",
+			"nome": "saúde",
 			"desc": "corpo e saúde física: medicina, alimentação, atividade física e sono",
 			"generos": [
 				{
 					"id": "saude_medicina",
-					"pt": "medicina",
+					"nome": "medicina",
 					"desc": "doenças, sintomas, tratamentos, remédios, exames, sistema de saúde"
 				},
 				{
 					"id": "saude_nutricao",
-					"pt": "nutrição",
+					"nome": "nutrição",
 					"desc": "alimentação, dietas, nutrientes, suplementos"
 				},
 				{
 					"id": "saude_exercicio",
-					"pt": "exercício",
+					"nome": "exercício",
 					"desc": "treino, esporte, musculação, corrida, mobilidade, condicionamento físico"
 				},
 				{
 					"id": "saude_sono",
-					"pt": "sono",
+					"nome": "sono",
 					"desc": "qualidade do sono, ritmo circadiano, descanso, recuperação"
 				},
 				{
 					"id": "saude_neurociencia",
-					"pt": "neurociência",
+					"nome": "neurociência",
 					"desc": "cérebro, sistema nervoso, neurotransmissores, base biológica do comportamento"
 				},
 				{
 					"id": "saude_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de saúde como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "psicologia",
-			"pt": "psicologia",
+			"nome": "psicologia",
 			"desc": "entender a mente humana (teoria): como pensamos, sentimos e agimos. Para melhorar a si mesmo na prática, use desenvolvimento pessoal",
 			"generos": [
 				{
 					"id": "psicologia_cognicao",
-					"pt": "cognição",
+					"nome": "cognição",
 					"desc": "atenção, percepção, memória como processo mental, vieses cognitivos, tomada de decisão"
 				},
 				{
 					"id": "psicologia_emocoes",
-					"pt": "emoções",
+					"nome": "emoções",
 					"desc": "emoções, sentimentos, regulação emocional, estresse, ansiedade como fenômeno"
 				},
 				{
 					"id": "psicologia_comportamento",
-					"pt": "comportamento",
+					"nome": "comportamento",
 					"desc": "psicologia comportamental e social, influência, motivação humana, hábitos como fenômeno"
 				},
 				{
 					"id": "psicologia_personalidade",
-					"pt": "personalidade",
+					"nome": "personalidade",
 					"desc": "traços de personalidade, temperamento, identidade, diferenças individuais"
 				},
 				{
 					"id": "psicologia_saude_mental",
-					"pt": "saúde mental",
+					"nome": "saúde mental",
 					"desc": "transtornos mentais, terapia, depressão, ansiedade clínica, bem-estar psicológico"
 				},
 				{
 					"id": "psicologia_relacionamentos",
-					"pt": "relacionamentos",
+					"nome": "relacionamentos",
 					"desc": "amizade, amor, família, apego, comunicação interpessoal, conflitos"
 				},
 				{
 					"id": "psicologia_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de psicologia como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "pensamento",
-			"pt": "pensamento",
+			"nome": "pensamento",
 			"desc": "como raciocinar e grandes questões: filosofia, ética, lógica, religião e ferramentas de pensamento. Para como aprender, use aprendizagem",
 			"generos": [
 				{
 					"id": "pensamento_filosofia",
-					"pt": "filosofia",
+					"nome": "filosofia",
 					"desc": "história da filosofia, filósofos, correntes, metafísica, existencialismo, estoicismo"
 				},
 				{
 					"id": "pensamento_etica",
-					"pt": "ética",
+					"nome": "ética",
 					"desc": "moral, valores, dilemas éticos, ética aplicada, ética da tecnologia"
 				},
 				{
 					"id": "pensamento_logica",
-					"pt": "lógica",
+					"nome": "lógica",
 					"desc": "argumentação, falácias, raciocínio dedutivo e indutivo, pensamento crítico"
 				},
 				{
 					"id": "pensamento_epistemologia",
-					"pt": "epistemologia",
+					"nome": "epistemologia",
 					"desc": "conhecimento, verdade, evidência, crença, método científico, ceticismo"
 				},
 				{
 					"id": "pensamento_religiao",
-					"pt": "religião",
+					"nome": "religião",
 					"desc": "religiões, teologia, espiritualidade, fé, textos sagrados"
 				},
 				{
 					"id": "pensamento_modelos_mentais",
-					"pt": "modelos mentais",
+					"nome": "modelos mentais",
 					"desc": "frameworks de pensamento, heurísticas, pensamento sistêmico, primeiros princípios"
 				},
 				{
 					"id": "pensamento_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de pensamento como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "sociedade",
-			"pt": "sociedade",
+			"nome": "sociedade",
 			"desc": "como a sociedade funciona: política, história, leis, grupos e cultura",
 			"generos": [
 				{
 					"id": "sociedade_politica",
-					"pt": "política",
+					"nome": "política",
 					"desc": "governo, eleições, ideologias, partidos, políticas públicas, ciência política"
 				},
 				{
 					"id": "sociedade_historia",
-					"pt": "história",
+					"nome": "história",
 					"desc": "eventos históricos, períodos, civilizações, biografias históricas"
 				},
 				{
 					"id": "sociedade_direito",
-					"pt": "direito",
+					"nome": "direito",
 					"desc": "leis, direitos, contratos, justiça, regras legais, direito do trabalho"
 				},
 				{
 					"id": "sociedade_sociologia",
-					"pt": "sociologia",
+					"nome": "sociologia",
 					"desc": "grupos sociais, desigualdade, classes, antropologia, demografia, comportamento coletivo"
 				},
 				{
 					"id": "sociedade_geopolitica",
-					"pt": "geopolítica",
+					"nome": "geopolítica",
 					"desc": "relações internacionais, conflitos, países, guerras, diplomacia"
 				},
 				{
 					"id": "sociedade_cultura",
-					"pt": "cultura",
+					"nome": "cultura",
 					"desc": "mídia, internet, tendências, costumes, cultura pop, comunicação de massa"
 				},
 				{
 					"id": "sociedade_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de sociedade como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "financas",
-			"pt": "finanças",
+			"nome": "finanças",
 			"desc": "dinheiro e economia: finanças pessoais, investimentos, impostos e economia geral",
 			"generos": [
 				{
 					"id": "financas_financas_pessoais",
-					"pt": "finanças pessoais",
+					"nome": "finanças pessoais",
 					"desc": "orçamento, poupança, dívidas, gastos, planejamento financeiro pessoal"
 				},
 				{
 					"id": "financas_investimentos",
-					"pt": "investimentos",
+					"nome": "investimentos",
 					"desc": "ações, fundos, renda fixa, cripto, mercado financeiro, aposentadoria"
 				},
 				{
 					"id": "financas_impostos",
-					"pt": "impostos",
+					"nome": "impostos",
 					"desc": "tributos, declaração de renda, contabilidade pessoal, obrigações fiscais"
 				},
 				{
 					"id": "financas_economia",
-					"pt": "economia",
+					"nome": "economia",
 					"desc": "macro e microeconomia, inflação, juros, mercados, teoria econômica"
 				},
 				{
 					"id": "financas_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de finanças como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "negocios",
-			"pt": "negócios",
+			"nome": "negócios",
 			"desc": "como empresas e organizações funcionam e crescem. Para a própria trajetória profissional, use carreira",
 			"generos": [
 				{
 					"id": "negocios_empreendedorismo",
-					"pt": "empreendedorismo",
+					"nome": "empreendedorismo",
 					"desc": "criar negócios, startups, modelo de negócio, freelancing como empresa"
 				},
 				{
 					"id": "negocios_marketing",
-					"pt": "marketing",
+					"nome": "marketing",
 					"desc": "marketing digital, branding, redes sociais como canal, SEO, conteúdo, publicidade"
 				},
 				{
 					"id": "negocios_vendas",
-					"pt": "vendas",
+					"nome": "vendas",
 					"desc": "vendas, CRM, clientes, negociação comercial, funil"
 				},
 				{
 					"id": "negocios_gestao",
-					"pt": "gestão",
+					"nome": "gestão",
 					"desc": "administração, gestão de pessoas, RH, processos, operações, comportamento organizacional"
 				},
 				{
 					"id": "negocios_estrategia",
-					"pt": "estratégia",
+					"nome": "estratégia",
 					"desc": "estratégia empresarial, concorrência, planejamento, análise de mercado"
 				},
 				{
 					"id": "negocios_produto",
-					"pt": "produto",
+					"nome": "produto",
 					"desc": "desenvolvimento de produto, UX de produto, roadmap, product management"
 				},
 				{
 					"id": "negocios_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de negócios como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "carreira",
-			"pt": "carreira",
+			"nome": "carreira",
 			"desc": "a minha trajetória profissional: conseguir, manter e evoluir num trabalho. Para como empresas funcionam, use negócios",
 			"generos": [
 				{
 					"id": "carreira_emprego",
-					"pt": "emprego",
+					"nome": "emprego",
 					"desc": "busca de vagas, mercado de trabalho, candidaturas, contratos de trabalho, trabalho remoto"
 				},
 				{
 					"id": "carreira_curriculo",
-					"pt": "currículo",
+					"nome": "currículo",
 					"desc": "CV, portfólio, LinkedIn, perfil profissional, cartas de apresentação"
 				},
 				{
 					"id": "carreira_entrevistas",
-					"pt": "entrevistas",
+					"nome": "entrevistas",
 					"desc": "processos seletivos, entrevistas de emprego, testes técnicos, avaliações"
 				},
 				{
 					"id": "carreira_networking",
-					"pt": "networking",
+					"nome": "networking",
 					"desc": "contatos profissionais, comunidades, eventos, mentoria"
 				},
 				{
 					"id": "carreira_lideranca",
-					"pt": "liderança",
+					"nome": "liderança",
 					"desc": "liderar equipes, soft skills, comunicação no trabalho, oratória profissional"
 				},
 				{
 					"id": "carreira_vocacao",
-					"pt": "vocação",
+					"nome": "vocação",
 					"desc": "escolha de carreira, propósito profissional, transição de carreira, áreas de atuação"
 				},
 				{
 					"id": "carreira_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de carreira como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "aprendizagem",
-			"pt": "aprendizagem",
+			"nome": "aprendizagem",
 			"desc": "como aprender e estudar: métodos, memória, idiomas, ensino e gestão do conhecimento. Para como raciocinar, use pensamento",
 			"generos": [
 				{
 					"id": "aprendizagem_tecnicas_estudo",
-					"pt": "técnicas estudo",
+					"nome": "técnicas estudo",
 					"desc": "métodos de estudo, repetição espaçada, prática deliberada, aprendizagem significativa, cursos"
 				},
 				{
 					"id": "aprendizagem_memoria",
-					"pt": "memória",
+					"nome": "memória",
 					"desc": "memorização, flashcards, Anki, retenção, técnicas mnemônicas"
 				},
 				{
 					"id": "aprendizagem_idiomas",
-					"pt": "idiomas",
+					"nome": "idiomas",
 					"desc": "aprender línguas estrangeiras: inglês, italiano, gramática, vocabulário"
 				},
 				{
 					"id": "aprendizagem_pedagogia",
-					"pt": "pedagogia",
+					"nome": "pedagogia",
 					"desc": "ensino, educação, escola, didática, como ensinar outros"
 				},
 				{
 					"id": "aprendizagem_leitura",
-					"pt": "leitura",
+					"nome": "leitura",
 					"desc": "leitura, livros, fichamento, leitura rápida, hábito de ler"
 				},
 				{
 					"id": "aprendizagem_anotacoes",
-					"pt": "anotações",
+					"nome": "anotações",
 					"desc": "gestão do conhecimento pessoal, Zettelkasten, Obsidian, segundo cérebro, tomar notas"
 				},
 				{
 					"id": "aprendizagem_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de aprendizagem como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "desenvolvimento_pessoal",
-			"pt": "desenvolvimento pessoal",
+			"nome": "desenvolvimento pessoal",
 			"desc": "melhorar a si mesmo na prática: hábitos, produtividade, foco e autoconhecimento. Para teoria da mente, use psicologia",
 			"generos": [
 				{
 					"id": "desenvolvimento_pessoal_habitos",
-					"pt": "hábitos",
+					"nome": "hábitos",
 					"desc": "criar e mudar hábitos, rotinas, disciplina, consistência"
 				},
 				{
 					"id": "desenvolvimento_pessoal_produtividade",
-					"pt": "produtividade",
+					"nome": "produtividade",
 					"desc": "gestão do tempo, organização, planejamento, métodos como GTD, ferramentas de produtividade"
 				},
 				{
 					"id": "desenvolvimento_pessoal_foco",
-					"pt": "foco",
+					"nome": "foco",
 					"desc": "concentração, deep work, distrações, procrastinação"
 				},
 				{
 					"id": "desenvolvimento_pessoal_autoconhecimento",
-					"pt": "autoconhecimento",
+					"nome": "autoconhecimento",
 					"desc": "valores pessoais, reflexão, conhecer a si mesmo, inteligência emocional prática"
 				},
 				{
 					"id": "desenvolvimento_pessoal_motivacao",
-					"pt": "motivação",
+					"nome": "motivação",
 					"desc": "motivação, força de vontade, mentalidade, resiliência"
 				},
 				{
 					"id": "desenvolvimento_pessoal_objetivos",
-					"pt": "objetivos",
+					"nome": "objetivos",
 					"desc": "metas, propósito de vida, planejamento pessoal, visão de futuro"
 				},
 				{
 					"id": "desenvolvimento_pessoal_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de desenvolvimento pessoal como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "artes",
-			"pt": "artes",
+			"nome": "artes",
 			"desc": "criação e expressão artística: escrita, imagem, som e design",
 			"generos": [
 				{
 					"id": "artes_escrita",
-					"pt": "escrita",
+					"nome": "escrita",
 					"desc": "escrita criativa e profissional, redação, storytelling, copywriting, ensaios"
 				},
 				{
 					"id": "artes_fotografia",
-					"pt": "fotografia",
+					"nome": "fotografia",
 					"desc": "fotografia, câmeras, composição, edição de fotos, portfólio fotográfico"
 				},
 				{
 					"id": "artes_musica",
-					"pt": "música",
+					"nome": "música",
 					"desc": "música, instrumentos, produção musical, áudio, equipamentos de som"
 				},
 				{
 					"id": "artes_design",
-					"pt": "design",
+					"nome": "design",
 					"desc": "design gráfico, design visual, tipografia, cores, UI visual, ilustração"
 				},
 				{
 					"id": "artes_audiovisual",
-					"pt": "audiovisual",
+					"nome": "audiovisual",
 					"desc": "vídeo, cinema, edição de vídeo, YouTube, vídeo-ensaios, animação"
 				},
 				{
 					"id": "artes_literatura",
-					"pt": "literatura",
+					"nome": "literatura",
 					"desc": "livros de ficção, poesia, autores, crítica literária"
 				},
 				{
 					"id": "artes_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de artes como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]
 		},
 		{
 			"id": "cotidiano",
-			"pt": "cotidiano",
+			"nome": "cotidiano",
 			"desc": "vida prática do dia a dia: casa, viagens, burocracia, compras, comida e transporte",
 			"generos": [
 				{
 					"id": "cotidiano_casa",
-					"pt": "casa",
+					"nome": "casa",
 					"desc": "moradia, aluguel, limpeza, manutenção, mudança, organização da casa"
 				},
 				{
 					"id": "cotidiano_viagem",
-					"pt": "viagem",
+					"nome": "viagem",
 					"desc": "viagens, turismo, roteiros, hospedagem, lugares para visitar"
 				},
 				{
 					"id": "cotidiano_burocracia",
-					"pt": "burocracia",
+					"nome": "burocracia",
 					"desc": "documentos, permesso di soggiorno, cidadania, trâmites, órgãos públicos, formulários"
 				},
 				{
 					"id": "cotidiano_compras",
-					"pt": "compras",
+					"nome": "compras",
 					"desc": "compras, comparação de produtos, recomendações de produtos, ofertas"
 				},
 				{
 					"id": "cotidiano_culinaria",
-					"pt": "culinária",
+					"nome": "culinária",
 					"desc": "receitas, cozinhar, ingredientes, restaurantes"
 				},
 				{
 					"id": "cotidiano_mobilidade",
-					"pt": "mobilidade",
+					"nome": "mobilidade",
 					"desc": "transporte, carro, trem, ônibus, carteira de motorista, deslocamento"
 				},
 				{
 					"id": "cotidiano_geral",
-					"pt": "geral",
+					"nome": "geral",
 					"desc": "a nota trata de cotidiano como um todo, ou de um tema que não se encaixa em nenhuma subárea acima"
 				}
 			]

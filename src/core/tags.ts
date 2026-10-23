@@ -1,6 +1,6 @@
 // Alt+T: tag "<pasta raiz>/<categoria>" a partir do que o Jev já gravou. Sem rede.
 import { normalizeTags } from './jev';
-import { NENHUMA } from './types';
+import { NENHUMAS } from './prompts';
 
 /** kebab-case ASCII: "Ciência da Computação" → "ciencia-da-computacao". */
 export function slug(s: string): string {
@@ -33,7 +33,7 @@ export function gerarTags(
 	const prefixo = prefixoPasta(path, excecoes);
 	if (!prefixo) return { erro: 'raiz' };
 	const valor = typeof fm?.[campo] === 'string' ? fm[campo].trim() : '';
-	if (!valor || valor === NENHUMA) return { erro: 'sem-categoria' };
+	if (!valor || NENHUMAS.has(valor)) return { erro: 'sem-categoria' };
 	const tags = [`${prefixo}/${slug(valor)}`];
 	if (fm?.['ai-generated'] === true) tags.unshift(AI);
 	return { prefixo, tags };

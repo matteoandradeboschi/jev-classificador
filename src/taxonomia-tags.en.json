@@ -1,0 +1,140 @@
+{
+  "versao": 1,
+  "criado_em": "2026-10-23",
+  "uso": "Closed wordlist of generic tags for the Jev Classifier 'Generate topic tags' command, English version (same structure as taxonomia-tags.json). Jev only picks tags from this list.",
+  "regras": {
+    "formato": "lowercase, no accents, kebab-case, no '/' (flat tags)",
+    "max_total": 3,
+    "max_por_faceta": { "tema": 3, "forma": 1 },
+    "nao_usar": "directory tags (project/, concept/, tool/, reference/...) and proper names; specific people, courses and projects go in links, not tags",
+    "adicionar_tag": "only when it shows up in 3+ notes and fits no existing tag"
+  },
+  "facetas": [
+    {
+      "id": "tema",
+      "nome": "Topic",
+      "descricao": "What the note is about.",
+      "grupos": [
+        {
+          "nome": "technology",
+          "tags": [
+            { "tag": "ai", "desc": "Artificial intelligence: LLMs, prompts, agents, models like Claude, Gemini, Jev." },
+            { "tag": "programming", "desc": "Writing code, languages, software development, plugins, scripts." },
+            { "tag": "automation", "desc": "Automating tasks and workflows to eliminate manual work." },
+            { "tag": "cybersecurity", "desc": "Information security, hacking, pentesting, exploits, passwords, hashes, hardening." },
+            { "tag": "linux", "desc": "Linux, terminal, shell, system commands." },
+            { "tag": "computer-networks", "desc": "Computer networks: protocols, ports, servers, SSH, FTP, internet." },
+            { "tag": "hardware", "desc": "Computers and physical devices: laptop, parts, BIOS, peripherals." },
+            { "tag": "web", "desc": "Websites, browsers, extensions, landing pages, generations of the web." },
+            { "tag": "mobile", "desc": "Phones and mobile apps: iOS, Android, shortcuts, Siri." },
+            { "tag": "obsidian", "desc": "The Obsidian app: vault, plugins, themes, configuration." },
+            { "tag": "knowledge-management", "desc": "Organizing notes and ideas: PKM, zettelkasten, second brain, note-taking methods." },
+            { "tag": "data-and-backup", "desc": "Storage, backup, sync, NAS, cloud, files." },
+            { "tag": "privacy", "desc": "Protecting personal data, tracking, online anonymity." }
+          ]
+        },
+        {
+          "nome": "mind-and-learning",
+          "tags": [
+            { "tag": "learning", "desc": "How to learn and master skills, self-teaching, the learning cycle." },
+            { "tag": "study-techniques", "desc": "Concrete study methods: review, note-taking, repetition, notebooks." },
+            { "tag": "memory", "desc": "Memorizing, remembering, forgetting, repertoire." },
+            { "tag": "reading", "desc": "Reading books and texts, reading habit and technique." },
+            { "tag": "writing", "desc": "Writing texts, composition, clarity, style." },
+            { "tag": "critical-thinking", "desc": "Reasoning, logic, questioning assumptions, Socratic method, asking good questions." },
+            { "tag": "creativity", "desc": "Generating original ideas, connecting different things, inventing." },
+            { "tag": "productivity", "desc": "Focus, time management, organizing tasks, planning the day." },
+            { "tag": "habits", "desc": "Building or changing habits, routine, consistency." },
+            { "tag": "motivation", "desc": "Discipline, momentum, drive to act, continuous improvement." },
+            { "tag": "decision-making", "desc": "Choosing between options, weighing risks and consequences." },
+            { "tag": "psychology", "desc": "Human behavior, mind, biases, personality." },
+            { "tag": "neuroscience", "desc": "Brain, nervous system, biological basis of thought." },
+            { "tag": "emotions", "desc": "Feelings, emotional instinct, chills, emotional reactions." },
+            { "tag": "self-knowledge", "desc": "Understanding yourself: inner layer, values, how I work." },
+            { "tag": "identity", "desc": "Who I am, self-image, social mask, alter ego." },
+            { "tag": "mental-health", "desc": "Psychological well-being, anxiety, feeling good with yourself." }
+          ]
+        },
+        {
+          "nome": "people-and-society",
+          "tags": [
+            { "tag": "relationships", "desc": "Relationships with other people: friendship, family, giving and receiving." },
+            { "tag": "communication", "desc": "Speaking and expressing yourself: public speaking, debate, conversation, thinking before speaking." },
+            { "tag": "networking", "desc": "Building professional contacts and connections." },
+            { "tag": "leadership", "desc": "Leading, influencing, guiding people or groups." },
+            { "tag": "society", "desc": "How society works: hierarchy, elites, culture, collective behavior." },
+            { "tag": "ethics", "desc": "Morality, right and wrong, virtues and vices." },
+            { "tag": "languages", "desc": "Learning or using languages: English, Italian, Portuguese." },
+            { "tag": "italy", "desc": "Living in Italy: cities, local culture, services, customs." },
+            { "tag": "bureaucracy", "desc": "Documents, public offices, paperwork, official forms." },
+            { "tag": "health", "desc": "Physical health: body, sleep, food, exercise." }
+          ]
+        },
+        {
+          "nome": "work-and-money",
+          "tags": [
+            { "tag": "career", "desc": "Professional path, growth, choosing a field." },
+            { "tag": "jobs", "desc": "Looking for work: resume, interviews, agencies, job openings." },
+            { "tag": "courses", "desc": "Training courses, classes, certifications, course materials." },
+            { "tag": "business", "desc": "Business models, customers, sales, CRM, niches." },
+            { "tag": "entrepreneurship", "desc": "Starting a startup or your own product, validating business ideas." },
+            { "tag": "marketing", "desc": "Promotion, conversion, positioning, audience." },
+            { "tag": "content-creation", "desc": "Publishing content: newsletter, Substack, posts, social media." },
+            { "tag": "personal-finance", "desc": "Personal money: spending, saving, purchases, budget." },
+            { "tag": "economics", "desc": "How the economy works: markets, inflation, value, interest rates." }
+          ]
+        },
+        {
+          "nome": "knowledge",
+          "tags": [
+            { "tag": "philosophy", "desc": "Philosophical questions, thinkers, meaning, existence." },
+            { "tag": "science", "desc": "Science in general and the scientific method." },
+            { "tag": "physics", "desc": "Physics: laws, energy, motion." },
+            { "tag": "astronomy", "desc": "Space, planets, stars, the universe." },
+            { "tag": "math", "desc": "Mathematics, numbers, probability, formal logic." },
+            { "tag": "history", "desc": "Historical facts and periods." },
+            { "tag": "investigation", "desc": "Investigating and verifying facts: research, OSINT, tracing evidence and connections." }
+          ]
+        },
+        {
+          "nome": "creativity-and-leisure",
+          "tags": [
+            { "tag": "design", "desc": "Visual design, interfaces, colors, typography, layout." },
+            { "tag": "music", "desc": "Music, listening, playing, Spotify." },
+            { "tag": "video", "desc": "Creating and editing videos." },
+            { "tag": "movies-and-tv", "desc": "Movies and TV series: Matrix, Stranger Things, reviews." },
+            { "tag": "games", "desc": "Video games and games." },
+            { "tag": "sports", "desc": "Sports and physical activity: skateboarding, horse riding, training." },
+            { "tag": "skateboarding", "desc": "Skateboarding, tricks, skateparks." },
+            { "tag": "hobbies", "desc": "Pastimes: Rubik's cube, magic tricks, vehicles, collecting." },
+            { "tag": "events", "desc": "Weddings, parties, invitations, celebrations." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forma",
+      "nome": "Form",
+      "descricao": "What kind of note it is (regardless of topic). At most 1.",
+      "grupos": [
+        {
+          "nome": "form",
+          "tags": [
+            { "tag": "idea", "desc": "A proposal for something to create or do, not yet executed." },
+            { "tag": "insight", "desc": "A new, sudden perception or connection about something." },
+            { "tag": "reflection", "desc": "A personal thought developed about a topic." },
+            { "tag": "question", "desc": "An open question; a note centered on an unanswered question." },
+            { "tag": "summary", "desc": "A synthesis of external content: video, book, class, post." },
+            { "tag": "tutorial", "desc": "Step by step or commands on how to do something." },
+            { "tag": "checklist", "desc": "A list of items to check or complete." },
+            { "tag": "plan", "desc": "Planning, goals, roadmap, next steps." },
+            { "tag": "spec", "desc": "Requirements and design of a piece of software or a project." },
+            { "tag": "story", "desc": "A lived experience told by the person themselves." },
+            { "tag": "comparison", "desc": "Compares options, tools or ideas side by side." },
+            { "tag": "definition", "desc": "Explains what a concept or term is." }
+          ]
+        }
+      ]
+    }
+  ]
+}
