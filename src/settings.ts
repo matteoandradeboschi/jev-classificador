@@ -1,6 +1,8 @@
 import { App, Notice, PluginSettingTab, SecretComponent, Setting } from 'obsidian';
 import type JevClassificador from './main';
+import type { Lang } from './core/prompts';
 import { CampoTag, parseExcecoes } from './core/tags';
+import { setLang, t } from './i18n';
 
 export interface JevSettings {
 	/** Nome do segredo no SecretStorage do Obsidian (o valor da chave não fica no data.json). */
@@ -15,6 +17,8 @@ export interface JevSettings {
 	tagCampo: CampoTag;
 	/** Alt+A: p mínimo do noul para gravar a tag de assunto sem perguntar. */
 	tagLimiar: number;
+	/** Taxonomia, wordlist, instruções ao Jev e interface. */
+	lang: Lang;
 	/** Já pediu a chave na 1ª ativação. */
 	onboarded: boolean;
 }
@@ -28,6 +32,7 @@ export const DEFAULT_SETTINGS: JevSettings = {
 	tagExcecoes: { lugares: 'lugar' },
 	tagCampo: 'genero',
 	tagLimiar: 0.5,
+	lang: 'pt',
 	onboarded: false,
 };
 
@@ -43,11 +48,27 @@ export class JevSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 		const s = this.plugin.settings;
+		const tx = t();
 
 		new Setting(containerEl)
-			.setName('Chave TypeSafe')
+			.setName(tx.idioma)
+			.setDesc(tx.idiomaDesc)
+			.addDropdown((d) =>
+				d
+					.addOptions({ pt: 'Português', en: 'English' })
+					.setValue(s.lang)
+					.onChange(async (v) => {
+						s.lang = v as Lang;
+						setLang(s.lang);
+						await this.plugin.saveSettings();
+						this.display();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName(tx.chave)
 			.setDesc(
-				'Guardada no armazenamento de segredos do Obsidian, não no data.json do vault (que vai no backup). Crie em console.typesafe.ai/keys.',
+tx.chaveDesc,
 			)
 			.addComponent((el) =>
 				new SecretComponent(this.app, el).setValue(s.apiKeySecret).onChange(async (name) => {
@@ -57,7 +78,7 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Modelo')
+			.setName(tx.modelo)
 			.addText((t) =>
 				t.setValue(s.model).onChange(async (v) => {
 					s.model = v.trim() || DEFAULT_SETTINGS.model;
@@ -66,8 +87,8 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Limiar de confiança')
-			.setDesc('Se p(categoria) × p(gênero) do par vencedor ficar abaixo disso, pede para escolher entre as 3 melhores. Valor inicial é um chute; ajuste depois de usar em notas reais.')
+			.setName(tx.limiar)
+			.setDesc(tx.limiarDesc)
 			.addSlider((sl) =>
 				sl
 					.setLimits(0, 1, 0.05)
@@ -80,8 +101,8 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Pastas excluídas')
-			.setDesc('Uma por linha. Notas nessas pastas nunca são lidas nem enviadas.')
+			.setName(tx.excluidas)
+			.setDesc(tx.excluidasDesc)
 			.addTextArea((t) =>
 				t.setValue(s.excludedFolders.join('\n')).onChange(async (v) => {
 					s.excludedFolders = v
@@ -93,8 +114,8 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Máx. caracteres do corpo')
-			.setDesc('Quanto da nota é enviado (mais caracteres = mais tokens cobrados).')
+			.setName(tx.maxChars)
+			.setDesc(tx.maxCharsDesc)
 			.addText((t) =>
 				t.setValue(String(s.maxBodyChars)).onChange(async (v) => {
 					const n = parseInt(v, 10);
@@ -104,23 +125,23 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Atalho de teclado')
-			.setDesc('Classifica a nota aberta (também pelo botão no topo da nota). Sem atalho padrão.')
-			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
+			.setName(tx.atalho)
+			.setDesc(tx.atalhoDesc)
+			.addButton((b) => b.setButtonText(tx.definirAtalho).onClick(() => this.abrirAtalhos()));
 
-		new Setting(containerEl).setName('Tags').setHeading();
-
-		new Setting(containerEl)
-			.setName('Atalho das tags')
-			.setDesc('Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API. Sem atalho padrão.')
-			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
+		new Setting(containerEl).setName(tx.tags).setHeading();
 
 		new Setting(containerEl)
-			.setName('Tag usa')
-			.setDesc('O que vem depois da barra: conceito/infraestrutura (gênero) ou conceito/tecnologia (categoria).')
+			.setName(tx.atalhoTags)
+			.setDesc(tx.atalhoTagsDesc)
+			.addButton((b) => b.setButtonText(tx.definirAtalho).onClick(() => this.abrirAtalhos()));
+
+		new Setting(containerEl)
+			.setName(tx.tagUsa)
+			.setDesc(tx.tagUsaDesc)
 			.addDropdown((d) =>
 				d
-					.addOptions({ genero: 'Gênero', categoria: 'Categoria' })
+					.addOptions({ genero: tx.genero, categoria: tx.categoria })
 					.setValue(s.tagCampo)
 					.onChange(async (v) => {
 						s.tagCampo = v as CampoTag;
@@ -129,8 +150,8 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Exceções do singular')
-			.setDesc('Uma por linha, pasta=prefixo. Por padrão só tira o "s" final (conceitos → conceito).')
+			.setName(tx.excecoes)
+			.setDesc(tx.excecoesDesc)
 			.addTextArea((t) =>
 				t
 					.setValue(Object.entries(s.tagExcecoes).map(([k, v]) => `${k}=${v}`).join('\n'))
@@ -140,16 +161,16 @@ export class JevSettingTab extends PluginSettingTab {
 					}),
 			);
 
-		new Setting(containerEl).setName('Tags de assunto').setHeading();
+		new Setting(containerEl).setName(tx.tagsAssunto).setHeading();
 
 		new Setting(containerEl)
-			.setName('Atalho das tags de assunto')
-			.setDesc('Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas. Sem atalho padrão.')
-			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
+			.setName(tx.atalhoAssunto)
+			.setDesc(tx.atalhoAssuntoDesc)
+			.addButton((b) => b.setButtonText(tx.definirAtalho).onClick(() => this.abrirAtalhos()));
 
 		new Setting(containerEl)
-			.setName('Limiar das tags')
-			.setDesc('Probabilidade mínima (0–1) para gravar a tag sem perguntar. Se nenhuma passar, abre a escolha entre as 6 melhores. Valor inicial é um chute; ajuste depois de usar em notas reais.')
+			.setName(tx.limiarTags)
+			.setDesc(tx.limiarTagsDesc)
 			.addSlider((sl) =>
 				sl
 					.setLimits(0, 1, 0.05)
@@ -169,6 +190,6 @@ export class JevSettingTab extends PluginSettingTab {
 		}).setting;
 		const tab = setting?.openTabById?.('hotkeys');
 		if (tab?.setQuery) tab.setQuery(this.plugin.manifest.name);
-		else new Notice('Abra Configurações → Atalhos e busque "Jev"');
+		else new Notice(t().abrirAtalhosManual);
 	}
 }

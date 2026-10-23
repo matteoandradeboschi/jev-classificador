@@ -1,4 +1,4 @@
-import { MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
+import { getLanguage, MarkdownView, Notice, Plugin, requestUrl, TFile } from 'obsidian';
 import { classify, JevError, parseOuErro, RawResponse, sendWithRetry } from './core/classify';
 import { isClassified, isExcluded, precisaConfirmar } from './core/jev';
 import { ordenarBloco } from './core/frontmatter';
@@ -12,16 +12,20 @@ import {
 	wordlist,
 } from './core/tagsAssunto';
 import type { CandidatoTag, JevRequest, Par, Taxonomia, TaxTags } from './core/types';
+import type { Lang } from './core/prompts';
 import taxJson from './taxonomia.json';
+import taxEnJson from './taxonomia.en.json';
 import taxTagsJson from './taxonomia-tags.json';
+import taxTagsEnJson from './taxonomia-tags.en.json';
+import { setLang, t } from './i18n';
 import { DEFAULT_SETTINGS, JevSettings, JevSettingTab } from './settings';
 import { ConfirmModal, ConfirmOverwriteModal, KeyModal, PickParModal, PickTagsModal } from './ui/modals';
 
-const tax = taxJson as unknown as Taxonomia;
-const taxTags = taxTagsJson as unknown as TaxTags;
-const WORDLIST = wordlist(taxTags);
+const TAX: Record<Lang, Taxonomia> = { pt: taxJson, en: taxEnJson };
+const TAX_TAGS: Record<Lang, TaxTags> = { pt: taxTagsJson, en: taxTagsEnJson };
+// Wordlist dos dois idiomas: trocar o idioma não deixa tags de assunto antigas para trás.
+const WORDLIST = new Set([...wordlist(TAX_TAGS.pt), ...wordlist(TAX_TAGS.en)]);
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
-const TOOLTIP = 'Classificar gênero e categoria (Jev)';
 
 export default class JevClassificador extends Plugin {
 	settings!: JevSettings;
@@ -35,7 +39,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'classificar',
-			name: 'Classificar gênero e categoria',
+			name: t().cmdClassificar,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -46,7 +50,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'gerar-tags',
-			name: 'Gerar tags (pasta/categoria)',
+			name: t().cmdGerarTags,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -57,7 +61,7 @@ export default class JevClassificador extends Plugin {
 
 		this.addCommand({
 			id: 'gerar-tags-assunto',
-			name: 'Gerar tags de assunto',
+			name: t().cmdGerarTagsAssunto,
 			checkCallback: (checking) => {
 				const file = this.app.workspace.getActiveViewOfType(MarkdownView)?.file;
 				if (!file) return false;
@@ -93,7 +97,7 @@ export default class JevClassificador extends Plugin {
 			const view = leaf.view;
 			if (!(view instanceof MarkdownView) || this.handled.has(view)) continue;
 			this.handled.add(view);
-			const btn = view.addAction('tags', TOOLTIP, () => {
+			const btn = view.addAction('tags', t().tooltip, () => {
 				if (view.file) void this.run(view.file);
 			});
 			this.buttons.push(btn);
@@ -120,7 +124,7 @@ export default class JevClassificador extends Plugin {
 	private async chave(): Promise<string | null> {
 		const key = this.app.secretStorage.getSecret(this.settings.apiKeySecret);
 		if (key) return key;
-		new Notice('Jev: configure a chave TypeSafe');
+		new Notice(t().configureChave);
 		return this.pedirChave();
 	}
 
@@ -143,10 +147,10 @@ export default class JevClassificador extends Plugin {
 
 	async run(file: TFile) {
 		if (this.busy) return;
-		if (file.extension !== 'md') return void new Notice('Jev: só funciona em notas .md');
+		if (file.extension !== 'md') return void new Notice(t().soMd('Jev'));
 		// Antes de ler o arquivo: pasta privada nunca é lida nem enviada.
 		if (isExcluded(file.path, this.settings.excludedFolders))
-			return void new Notice('Jev: pasta privada, não enviado');
+			return void new Notice(t().privadaNaoEnviado('Jev'));
 
 		const key = await this.chave();
 		if (!key) return;
@@ -161,13 +165,13 @@ export default class JevClassificador extends Plugin {
 		}
 
 		this.setBusy(true);
-		new Notice('Jev: classificando…');
+		new Notice(t().classificando);
 		try {
 			const content = await this.app.vault.cachedRead(file);
 			const result = await classify(
 				{ send: (r) => this.send(r, key), sleep: (ms) => new Promise((r) => window.setTimeout(r, ms)) },
 				{
-					tax,
+					tax: TAX[this.settings.lang],
 					note: {
 						basename: file.basename,
 						frontmatter: fm,
@@ -175,9 +179,10 @@ export default class JevClassificador extends Plugin {
 					},
 					model: this.settings.model,
 					maxChars: this.settings.maxBodyChars,
+					lang: this.settings.lang,
 				},
 			);
-			if (!result) return void new Notice('Jev: nenhuma categoria se aplica');
+			if (!result) return void new Notice(t().nenhumaCategoria);
 
 			let par: Par | null = {
 				categoria: result.melhor.categoria,
@@ -196,7 +201,7 @@ export default class JevClassificador extends Plugin {
 				ordenarBloco(f);
 			});
 			new Notice(
-				`Jev: ${par.categoria} · ${par.genero} (conf. ${par.pCategoria.toFixed(2)} / ${par.pGenero.toFixed(2)})`,
+				`Jev: ${par.categoria} · ${par.genero} (${t().conf} ${par.pCategoria.toFixed(2)} / ${par.pGenero.toFixed(2)})`,
 			);
 		} catch (e) {
 			this.reportError(e);
@@ -207,14 +212,14 @@ export default class JevClassificador extends Plugin {
 
 	/** Alt+T: tag "<pasta raiz>/<gênero ou categoria>" com o que o Jev já gravou. */
 	async gerarTags(file: TFile) {
-		if (file.extension !== 'md') return void new Notice('Tags: só funciona em notas .md');
-		if (isExcluded(file.path, this.settings.excludedFolders)) return void new Notice('Tags: pasta privada, ignorada');
+		if (file.extension !== 'md') return void new Notice(t().soMd('Tags'));
+		if (isExcluded(file.path, this.settings.excludedFolders)) return void new Notice(t().privadaIgnorada);
 
 		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter ?? null;
 		const r = gerarTags(file.path, fm, this.settings.tagExcecoes, this.settings.tagCampo);
 		if ('erro' in r)
 			return void new Notice(
-				r.erro === 'raiz' ? 'Tags: nota fora de pasta, nada a fazer' : `Tags: nota sem ${this.settings.tagCampo === 'genero' ? 'gênero' : 'categoria'} — classifique antes (Alt+C)`,
+				r.erro === 'raiz' ? t().foraDePasta : t().semCampo(this.settings.tagCampo),
 			);
 
 		await this.app.fileManager.processFrontMatter(file, (f: Record<string, unknown>) => {
@@ -227,10 +232,10 @@ export default class JevClassificador extends Plugin {
 	/** Alt+A: 1–3 tags planas da wordlist (taxonomia-tags.json), via Jev. Troca só as tags da wordlist. */
 	async gerarTagsAssunto(file: TFile) {
 		if (this.busy) return;
-		if (file.extension !== 'md') return void new Notice('Tags: só funciona em notas .md');
+		if (file.extension !== 'md') return void new Notice(t().soMd('Tags'));
 		// Antes de ler o arquivo: pasta privada nunca é lida nem enviada.
 		if (isExcluded(file.path, this.settings.excludedFolders))
-			return void new Notice('Tags: pasta privada, não enviado');
+			return void new Notice(t().privadaNaoEnviado('Tags'));
 
 		const key = await this.chave();
 		if (!key) return;
@@ -240,15 +245,17 @@ export default class JevClassificador extends Plugin {
 		if (atuais.length) {
 			const ok = await new ConfirmModal(
 				this.app,
-				'Substituir tags de assunto?',
-				`A nota já tem ${atuais.map((t) => '#' + t).join(' ')}. As outras tags não mudam.`,
-				'Substituir',
+				t().substituirTitulo,
+				t().substituirTexto(atuais.map((x) => '#' + x).join(' ')),
+				t().substituir,
 			).ask();
 			if (!ok) return;
 		}
 
 		this.setBusy(true);
-		new Notice('Jev: gerando tags…');
+		new Notice(t().gerandoTags);
+		const lang = this.settings.lang;
+		const taxTags = TAX_TAGS[lang];
 		try {
 			const content = await this.app.vault.cachedRead(file);
 			const note = {
@@ -258,7 +265,7 @@ export default class JevClassificador extends Plugin {
 			};
 			const res = await sendWithRetry(
 				{ send: (r) => this.send(r, key), sleep: (ms) => new Promise((r) => window.setTimeout(r, ms)) },
-				(chars) => buildTagRequest(taxTags, note, this.settings.model, chars),
+				(chars) => buildTagRequest(taxTags, note, this.settings.model, chars, lang, WORDLIST),
 				this.settings.maxBodyChars,
 			);
 			const r = escolherTags(taxTags, parseOuErro(() => parseTagResponse(taxTags, res)), this.settings.tagLimiar);
@@ -288,24 +295,28 @@ export default class JevClassificador extends Plugin {
 		if (e instanceof JevError) {
 			switch (e.kind) {
 				case 'auth':
-					new Notice('Jev: chave TypeSafe inválida — veja as configurações');
+					new Notice(t().erroAuth);
 					return void this.pedirChave();
 				case 'rate':
-					return void new Notice(`Jev: serviço ocupado (HTTP ${e.status}), tente de novo depois`);
+					return void new Notice(t().erroRate(e.status));
 				case 'tokens':
-					return void new Notice('Jev: nota grande demais, reduza o máx. de caracteres');
+					return void new Notice(t().erroTokens);
 				case 'resposta':
-					return void new Notice(`Jev: resposta inesperada — ${e.message}`);
+					return void new Notice(t().erroResposta(e.message));
 				default:
-					return void new Notice(`Jev: erro HTTP ${e.status} — ${e.message}`);
+					return void new Notice(t().erroHttp(e.status, e.message));
 			}
 		}
 		console.error('Jev Classificador', e);
-		new Notice(`Jev: erro de rede/inesperado — ${(e as Error)?.message ?? e}`);
+		new Notice(t().erroRede((e as Error)?.message ?? String(e)));
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) as Partial<JevSettings>);
+		const data = (await this.loadData()) as Partial<JevSettings> | null;
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, data);
+		// Sem escolha salva: segue o idioma do Obsidian.
+		if (!data?.lang) this.settings.lang = getLanguage().startsWith('pt') ? 'pt' : 'en';
+		setLang(this.settings.lang);
 	}
 
 	async saveSettings() {

@@ -1,4 +1,5 @@
 import { buildRequest, NoteInput, parseResponse } from './jev';
+import type { Lang } from './prompts';
 import { JevRequest, JevResponse, Resultado, Taxonomia } from './types';
 
 export interface RawResponse {
@@ -29,6 +30,7 @@ export interface ClassifyOptions {
 	note: NoteInput;
 	model: string;
 	maxChars: number;
+	lang?: Lang;
 }
 
 const BACKOFF_MS = [1000, 2000];
@@ -44,10 +46,10 @@ function validationMessage(r: RawResponse): string {
 /** Envia 1 requisição (com retries de spec) e devolve o resultado ou null ("nenhuma"). */
 export async function classify(
 	deps: ClassifyDeps,
-	{ tax, note, model, maxChars }: ClassifyOptions,
+	{ tax, note, model, maxChars, lang = 'pt' }: ClassifyOptions,
 ): Promise<Resultado | null> {
-	const res = await sendWithRetry(deps, (chars) => buildRequest(tax, note, model, chars), maxChars);
-	return parseOuErro(() => parseResponse(tax, res));
+	const res = await sendWithRetry(deps, (chars) => buildRequest(tax, note, model, chars, lang), maxChars);
+	return parseOuErro(() => parseResponse(tax, res, lang));
 }
 
 /** Erro de interpretação da resposta vira JevError('resposta'). */

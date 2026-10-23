@@ -1,0 +1,542 @@
+{
+	"fonte": "own taxonomy (Matteo, 2026-10-23), English version; same ids as taxonomia.json",
+	"uso": "categoria = broad field; genero = subfield; 'general' = the field as a whole",
+	"categorias": [
+		{
+			"id": "tecnologia",
+			"nome": "technology",
+			"desc": "applied computing: building, using or securing software, hardware, networks and AI (not the basic science behind them)",
+			"generos": [
+				{
+					"id": "tecnologia_programacao",
+					"nome": "programming",
+					"desc": "languages, code, software engineering, architecture, frameworks, git, web and mobile development"
+				},
+				{
+					"id": "tecnologia_inteligencia_artificial",
+					"nome": "artificial intelligence",
+					"desc": "AI, machine learning, LLMs, prompts, agents, language models and their applications"
+				},
+				{
+					"id": "tecnologia_ciberseguranca",
+					"nome": "cybersecurity",
+					"desc": "information security, pentesting, hacking, privacy, applied cryptography, hardening, CTF"
+				},
+				{
+					"id": "tecnologia_dados",
+					"nome": "data",
+					"desc": "databases, data analysis, SQL, spreadsheets, visualization, data science"
+				},
+				{
+					"id": "tecnologia_infraestrutura",
+					"nome": "infrastructure",
+					"desc": "operating systems, Linux, networking, servers, cloud, DevOps, system configuration"
+				},
+				{
+					"id": "tecnologia_hardware",
+					"nome": "hardware",
+					"desc": "computers, components, peripherals, electronics, devices, BIOS, physical maintenance"
+				},
+				{
+					"id": "tecnologia_automacao",
+					"nome": "automation",
+					"desc": "scripts, workflows, integrations, no-code, tools and apps to automate tasks"
+				},
+				{
+					"id": "tecnologia_geral",
+					"nome": "general",
+					"desc": "the note is about technology as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "ciencia",
+			"nome": "science",
+			"desc": "natural and exact sciences: basic knowledge about the physical and living world, not its technological applications",
+			"generos": [
+				{
+					"id": "ciencia_matematica",
+					"nome": "mathematics",
+					"desc": "pure and applied mathematics, algebra, calculus, geometry, statistics, probability"
+				},
+				{
+					"id": "ciencia_fisica",
+					"nome": "physics",
+					"desc": "classical mechanics, thermodynamics, electromagnetism, quantum physics, relativity"
+				},
+				{
+					"id": "ciencia_quimica",
+					"nome": "chemistry",
+					"desc": "general, organic and inorganic chemistry, reactions, materials"
+				},
+				{
+					"id": "ciencia_biologia",
+					"nome": "biology",
+					"desc": "cells, genetics, evolution, zoology, botany, microbiology"
+				},
+				{
+					"id": "ciencia_ecologia",
+					"nome": "ecology",
+					"desc": "ecosystems, environment, climate, climate change, earth sciences, geology"
+				},
+				{
+					"id": "ciencia_astronomia",
+					"nome": "astronomy",
+					"desc": "space, planets, stars, cosmology, astrophysics"
+				},
+				{
+					"id": "ciencia_geral",
+					"nome": "general",
+					"desc": "the note is about science as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "saude",
+			"nome": "health",
+			"desc": "body and physical health: medicine, food, physical activity and sleep",
+			"generos": [
+				{
+					"id": "saude_medicina",
+					"nome": "medicine",
+					"desc": "diseases, symptoms, treatments, drugs, medical tests, healthcare system"
+				},
+				{
+					"id": "saude_nutricao",
+					"nome": "nutrition",
+					"desc": "eating, diets, nutrients, supplements"
+				},
+				{
+					"id": "saude_exercicio",
+					"nome": "exercise",
+					"desc": "training, sports, strength training, running, mobility, physical fitness"
+				},
+				{
+					"id": "saude_sono",
+					"nome": "sleep",
+					"desc": "sleep quality, circadian rhythm, rest, recovery"
+				},
+				{
+					"id": "saude_neurociencia",
+					"nome": "neuroscience",
+					"desc": "brain, nervous system, neurotransmitters, biological basis of behavior"
+				},
+				{
+					"id": "saude_geral",
+					"nome": "general",
+					"desc": "the note is about health as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "psicologia",
+			"nome": "psychology",
+			"desc": "understanding the human mind (theory): how we think, feel and act. For improving yourself in practice, use personal development",
+			"generos": [
+				{
+					"id": "psicologia_cognicao",
+					"nome": "cognition",
+					"desc": "attention, perception, memory as a mental process, cognitive biases, decision making"
+				},
+				{
+					"id": "psicologia_emocoes",
+					"nome": "emotions",
+					"desc": "emotions, feelings, emotional regulation, stress, anxiety as a phenomenon"
+				},
+				{
+					"id": "psicologia_comportamento",
+					"nome": "behavior",
+					"desc": "behavioral and social psychology, influence, human motivation, habits as a phenomenon"
+				},
+				{
+					"id": "psicologia_personalidade",
+					"nome": "personality",
+					"desc": "personality traits, temperament, identity, individual differences"
+				},
+				{
+					"id": "psicologia_saude_mental",
+					"nome": "mental health",
+					"desc": "mental disorders, therapy, depression, clinical anxiety, psychological well-being"
+				},
+				{
+					"id": "psicologia_relacionamentos",
+					"nome": "relationships",
+					"desc": "friendship, love, family, attachment, interpersonal communication, conflict"
+				},
+				{
+					"id": "psicologia_geral",
+					"nome": "general",
+					"desc": "the note is about psychology as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "pensamento",
+			"nome": "thinking",
+			"desc": "how to reason and the big questions: philosophy, ethics, logic, religion and thinking tools. For how to learn, use learning",
+			"generos": [
+				{
+					"id": "pensamento_filosofia",
+					"nome": "philosophy",
+					"desc": "history of philosophy, philosophers, schools of thought, metaphysics, existentialism, stoicism"
+				},
+				{
+					"id": "pensamento_etica",
+					"nome": "ethics",
+					"desc": "morality, values, ethical dilemmas, applied ethics, ethics of technology"
+				},
+				{
+					"id": "pensamento_logica",
+					"nome": "logic",
+					"desc": "argumentation, fallacies, deductive and inductive reasoning, critical thinking"
+				},
+				{
+					"id": "pensamento_epistemologia",
+					"nome": "epistemology",
+					"desc": "knowledge, truth, evidence, belief, scientific method, skepticism"
+				},
+				{
+					"id": "pensamento_religiao",
+					"nome": "religion",
+					"desc": "religions, theology, spirituality, faith, sacred texts"
+				},
+				{
+					"id": "pensamento_modelos_mentais",
+					"nome": "mental models",
+					"desc": "thinking frameworks, heuristics, systems thinking, first principles"
+				},
+				{
+					"id": "pensamento_geral",
+					"nome": "general",
+					"desc": "the note is about thinking as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "sociedade",
+			"nome": "society",
+			"desc": "how society works: politics, history, law, groups and culture",
+			"generos": [
+				{
+					"id": "sociedade_politica",
+					"nome": "politics",
+					"desc": "government, elections, ideologies, parties, public policy, political science"
+				},
+				{
+					"id": "sociedade_historia",
+					"nome": "history",
+					"desc": "historical events, periods, civilizations, historical biographies"
+				},
+				{
+					"id": "sociedade_direito",
+					"nome": "law",
+					"desc": "laws, rights, contracts, justice, legal rules, labor law"
+				},
+				{
+					"id": "sociedade_sociologia",
+					"nome": "sociology",
+					"desc": "social groups, inequality, classes, anthropology, demography, collective behavior"
+				},
+				{
+					"id": "sociedade_geopolitica",
+					"nome": "geopolitics",
+					"desc": "international relations, conflicts, countries, wars, diplomacy"
+				},
+				{
+					"id": "sociedade_cultura",
+					"nome": "culture",
+					"desc": "media, internet, trends, customs, pop culture, mass communication"
+				},
+				{
+					"id": "sociedade_geral",
+					"nome": "general",
+					"desc": "the note is about society as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "financas",
+			"nome": "finance",
+			"desc": "money and economics: personal finance, investing, taxes and the economy in general",
+			"generos": [
+				{
+					"id": "financas_financas_pessoais",
+					"nome": "personal finance",
+					"desc": "budgeting, saving, debt, spending, personal financial planning"
+				},
+				{
+					"id": "financas_investimentos",
+					"nome": "investing",
+					"desc": "stocks, funds, fixed income, crypto, financial markets, retirement"
+				},
+				{
+					"id": "financas_impostos",
+					"nome": "taxes",
+					"desc": "taxation, tax returns, personal accounting, tax obligations"
+				},
+				{
+					"id": "financas_economia",
+					"nome": "economics",
+					"desc": "macro and microeconomics, inflation, interest rates, markets, economic theory"
+				},
+				{
+					"id": "financas_geral",
+					"nome": "general",
+					"desc": "the note is about finance as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "negocios",
+			"nome": "business",
+			"desc": "how companies and organizations work and grow. For your own career path, use career",
+			"generos": [
+				{
+					"id": "negocios_empreendedorismo",
+					"nome": "entrepreneurship",
+					"desc": "starting businesses, startups, business models, freelancing as a business"
+				},
+				{
+					"id": "negocios_marketing",
+					"nome": "marketing",
+					"desc": "digital marketing, branding, social media as a channel, SEO, content, advertising"
+				},
+				{
+					"id": "negocios_vendas",
+					"nome": "sales",
+					"desc": "sales, CRM, customers, commercial negotiation, funnel"
+				},
+				{
+					"id": "negocios_gestao",
+					"nome": "management",
+					"desc": "administration, people management, HR, processes, operations, organizational behavior"
+				},
+				{
+					"id": "negocios_estrategia",
+					"nome": "strategy",
+					"desc": "business strategy, competition, planning, market analysis"
+				},
+				{
+					"id": "negocios_produto",
+					"nome": "product",
+					"desc": "product development, product UX, roadmap, product management"
+				},
+				{
+					"id": "negocios_geral",
+					"nome": "general",
+					"desc": "the note is about business as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "carreira",
+			"nome": "career",
+			"desc": "my own professional path: getting, keeping and growing in a job. For how companies work, use business",
+			"generos": [
+				{
+					"id": "carreira_emprego",
+					"nome": "jobs",
+					"desc": "job hunting, job market, applications, employment contracts, remote work"
+				},
+				{
+					"id": "carreira_curriculo",
+					"nome": "resume",
+					"desc": "CV, portfolio, LinkedIn, professional profile, cover letters"
+				},
+				{
+					"id": "carreira_entrevistas",
+					"nome": "interviews",
+					"desc": "hiring processes, job interviews, technical tests, assessments"
+				},
+				{
+					"id": "carreira_networking",
+					"nome": "networking",
+					"desc": "professional contacts, communities, events, mentorship"
+				},
+				{
+					"id": "carreira_lideranca",
+					"nome": "leadership",
+					"desc": "leading teams, soft skills, workplace communication, professional public speaking"
+				},
+				{
+					"id": "carreira_vocacao",
+					"nome": "vocation",
+					"desc": "choosing a career, professional purpose, career change, fields of work"
+				},
+				{
+					"id": "carreira_geral",
+					"nome": "general",
+					"desc": "the note is about career as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "aprendizagem",
+			"nome": "learning",
+			"desc": "how to learn and study: methods, memory, languages, teaching and knowledge management. For how to reason, use thinking",
+			"generos": [
+				{
+					"id": "aprendizagem_tecnicas_estudo",
+					"nome": "study techniques",
+					"desc": "study methods, spaced repetition, deliberate practice, meaningful learning, courses"
+				},
+				{
+					"id": "aprendizagem_memoria",
+					"nome": "memory",
+					"desc": "memorization, flashcards, Anki, retention, mnemonic techniques"
+				},
+				{
+					"id": "aprendizagem_idiomas",
+					"nome": "languages",
+					"desc": "learning foreign languages: English, Italian, grammar, vocabulary"
+				},
+				{
+					"id": "aprendizagem_pedagogia",
+					"nome": "pedagogy",
+					"desc": "teaching, education, school, didactics, how to teach others"
+				},
+				{
+					"id": "aprendizagem_leitura",
+					"nome": "reading",
+					"desc": "reading, books, reading notes, speed reading, reading habit"
+				},
+				{
+					"id": "aprendizagem_anotacoes",
+					"nome": "note-taking",
+					"desc": "personal knowledge management, Zettelkasten, Obsidian, second brain, taking notes"
+				},
+				{
+					"id": "aprendizagem_geral",
+					"nome": "general",
+					"desc": "the note is about learning as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "desenvolvimento_pessoal",
+			"nome": "personal development",
+			"desc": "improving yourself in practice: habits, productivity, focus and self-knowledge. For theory of the mind, use psychology",
+			"generos": [
+				{
+					"id": "desenvolvimento_pessoal_habitos",
+					"nome": "habits",
+					"desc": "building and changing habits, routines, discipline, consistency"
+				},
+				{
+					"id": "desenvolvimento_pessoal_produtividade",
+					"nome": "productivity",
+					"desc": "time management, organization, planning, methods like GTD, productivity tools"
+				},
+				{
+					"id": "desenvolvimento_pessoal_foco",
+					"nome": "focus",
+					"desc": "concentration, deep work, distractions, procrastination"
+				},
+				{
+					"id": "desenvolvimento_pessoal_autoconhecimento",
+					"nome": "self-knowledge",
+					"desc": "personal values, reflection, knowing yourself, practical emotional intelligence"
+				},
+				{
+					"id": "desenvolvimento_pessoal_motivacao",
+					"nome": "motivation",
+					"desc": "motivation, willpower, mindset, resilience"
+				},
+				{
+					"id": "desenvolvimento_pessoal_objetivos",
+					"nome": "goals",
+					"desc": "goals, life purpose, personal planning, vision of the future"
+				},
+				{
+					"id": "desenvolvimento_pessoal_geral",
+					"nome": "general",
+					"desc": "the note is about personal development as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "artes",
+			"nome": "arts",
+			"desc": "artistic creation and expression: writing, image, sound and design",
+			"generos": [
+				{
+					"id": "artes_escrita",
+					"nome": "writing",
+					"desc": "creative and professional writing, composition, storytelling, copywriting, essays"
+				},
+				{
+					"id": "artes_fotografia",
+					"nome": "photography",
+					"desc": "photography, cameras, composition, photo editing, photo portfolio"
+				},
+				{
+					"id": "artes_musica",
+					"nome": "music",
+					"desc": "music, instruments, music production, audio, sound equipment"
+				},
+				{
+					"id": "artes_design",
+					"nome": "design",
+					"desc": "graphic design, visual design, typography, colors, visual UI, illustration"
+				},
+				{
+					"id": "artes_audiovisual",
+					"nome": "audiovisual",
+					"desc": "video, film, video editing, YouTube, video essays, animation"
+				},
+				{
+					"id": "artes_literatura",
+					"nome": "literature",
+					"desc": "fiction books, poetry, authors, literary criticism"
+				},
+				{
+					"id": "artes_geral",
+					"nome": "general",
+					"desc": "the note is about arts as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		},
+		{
+			"id": "cotidiano",
+			"nome": "everyday life",
+			"desc": "practical day-to-day life: home, travel, bureaucracy, shopping, food and transport",
+			"generos": [
+				{
+					"id": "cotidiano_casa",
+					"nome": "home",
+					"desc": "housing, rent, cleaning, maintenance, moving, home organization"
+				},
+				{
+					"id": "cotidiano_viagem",
+					"nome": "travel",
+					"desc": "trips, tourism, itineraries, accommodation, places to visit"
+				},
+				{
+					"id": "cotidiano_burocracia",
+					"nome": "bureaucracy",
+					"desc": "documents, residence permits, citizenship, paperwork, public offices, forms"
+				},
+				{
+					"id": "cotidiano_compras",
+					"nome": "shopping",
+					"desc": "shopping, product comparisons, product recommendations, deals"
+				},
+				{
+					"id": "cotidiano_culinaria",
+					"nome": "cooking",
+					"desc": "recipes, cooking, ingredients, restaurants"
+				},
+				{
+					"id": "cotidiano_mobilidade",
+					"nome": "transport",
+					"desc": "transport, car, train, bus, driving license, commuting"
+				},
+				{
+					"id": "cotidiano_geral",
+					"nome": "general",
+					"desc": "the note is about everyday life as a whole, or about a topic that fits none of the subfields above"
+				}
+			]
+		}
+	]
+}

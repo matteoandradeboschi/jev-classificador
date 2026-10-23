@@ -49,3 +49,4 @@ export function requestUrl(p: { url: string; body: string; headers: Record<strin
 	requests.push(p);
 	return Promise.resolve(state.response);
 }
+export function getLanguage() { return 'pt-BR'; }
