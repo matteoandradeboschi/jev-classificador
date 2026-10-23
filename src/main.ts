@@ -172,7 +172,6 @@ export default class JevClassificador extends Plugin {
 						basename: file.basename,
 						frontmatter: fm,
 						content,
-						folder: this.settings.sendFolder ? (file.parent?.path ?? '') : undefined,
 					},
 					model: this.settings.model,
 					maxChars: this.settings.maxBodyChars,
@@ -256,7 +255,6 @@ export default class JevClassificador extends Plugin {
 				basename: file.basename,
 				frontmatter: fm,
 				content,
-				folder: this.settings.sendFolder ? (file.parent?.path ?? '') : undefined,
 			};
 			const res = await sendWithRetry(
 				{ send: (r) => this.send(r, key), sleep: (ms) => new Promise((r) => window.setTimeout(r, ms)) },
