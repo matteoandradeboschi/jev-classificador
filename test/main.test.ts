@@ -98,15 +98,14 @@ describe('fluxo run()', () => {
 		await plugin.run(new TFile('2-estudos/Pentest.md'));
 		expect(requests).toHaveLength(1);
 		expect(JSON.parse(requests[0]!.body).state.titulo).toBe('Pentest');
-		expect(JSON.parse(requests[0]!.body).state.pasta).toBe('2-estudos');
+		expect(JSON.parse(requests[0]!.body).state).not.toHaveProperty('pasta');
 		expect(written).toEqual([{ genero: 'programação', categoria: 'tecnologia' }]);
 		expect(notices.at(-1)).toBe('Jev: tecnologia · programação (conf. 0.95 / 0.95)');
 	});
 
-	it('toggle "enviar pasta" desligado: pasta não sai', async () => {
+	it('pasta nunca sai', async () => {
 		state.response = { status: 401, text: '', json: null };
 		const { plugin } = await setup({ key: 'k' });
-		plugin.settings.sendFolder = false;
 		await plugin.run(new TFile('1-conceitos/carreira/Networking.md'));
 		const body = JSON.parse(requests[0]!.body);
 		expect(body.state).not.toHaveProperty('pasta');

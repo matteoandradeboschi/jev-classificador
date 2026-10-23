@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, SecretComponent, Setting } from 'obsidian';
+import { App, Notice, PluginSettingTab, SecretComponent, Setting } from 'obsidian';
 import type JevClassificador from './main';
 import { CampoTag, parseExcecoes } from './core/tags';
 
@@ -9,7 +9,6 @@ export interface JevSettings {
 	threshold: number;
 	excludedFolders: string[];
 	maxBodyChars: number;
-	sendFolder: boolean;
 	/** Alt+T: nome da pasta (sem número) → prefixo da tag, quando "tirar o s" erra. */
 	tagExcecoes: Record<string, string>;
 	/** Alt+T: pasta/genero ou pasta/categoria. */
@@ -26,7 +25,6 @@ export const DEFAULT_SETTINGS: JevSettings = {
 	threshold: 0.6,
 	excludedFolders: [],
 	maxBodyChars: 12000,
-	sendFolder: true,
 	tagExcecoes: { lugares: 'lugar' },
 	tagCampo: 'genero',
 	tagLimiar: 0.5,
@@ -106,24 +104,16 @@ export class JevSettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
-			.setName('Enviar pasta da nota')
-			.setDesc('Manda o caminho da pasta (ex.: 1-conceitos/carreira) como contexto. Ajuda em títulos ambíguos.')
-			.addToggle((t) =>
-				t.setValue(s.sendFolder).onChange(async (v) => {
-					s.sendFolder = v;
-					await this.plugin.saveSettings();
-				}),
-			);
-
-		new Setting(containerEl)
 			.setName('Atalho de teclado')
-			.setDesc('Classifica a nota aberta (também pelo botão no topo da nota). Sem atalho padrão: defina em Configurações → Atalhos, buscando "Jev".');
+			.setDesc('Classifica a nota aberta (também pelo botão no topo da nota). Sem atalho padrão.')
+			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
 
 		new Setting(containerEl).setName('Tags').setHeading();
 
 		new Setting(containerEl)
 			.setName('Atalho das tags')
-			.setDesc('Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API. Sem atalho padrão: defina em Configurações → Atalhos.');
+			.setDesc('Gera #pasta/gênero ou #pasta/categoria (pasta raiz sem número e no singular) a partir do que o Jev já gravou. Não usa a API. Sem atalho padrão.')
+			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
 
 		new Setting(containerEl)
 			.setName('Tag usa')
@@ -154,7 +144,8 @@ export class JevSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName('Atalho das tags de assunto')
-			.setDesc('Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas. Sem atalho padrão: defina em Configurações → Atalhos.');
+			.setDesc('Pede ao Jev 1–3 tags planas da wordlist (ex.: #ia #linux #tutorial). Usa a API, com a mesma chave e pastas excluídas. Sem atalho padrão.')
+			.addButton((b) => b.setButtonText('Definir atalho').onClick(() => this.abrirAtalhos()));
 
 		new Setting(containerEl)
 			.setName('Limiar das tags')
@@ -169,5 +160,15 @@ export class JevSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					}),
 			);
+	}
+
+	/** Abre a tela de Atalhos filtrada pelo plugin. API interna do Obsidian: se sumir, cai no aviso. */
+	private abrirAtalhos() {
+		const setting = (this.app as unknown as {
+			setting?: { openTabById?(id: string): { setQuery?(q: string): void } | undefined };
+		}).setting;
+		const tab = setting?.openTabById?.('hotkeys');
+		if (tab?.setQuery) tab.setQuery(this.plugin.manifest.name);
+		else new Notice('Abra Configurações → Atalhos e busque "Jev"');
 	}
 }
